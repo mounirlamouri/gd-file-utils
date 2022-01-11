@@ -25,8 +25,11 @@ test('Read freshly created man sc character', async () => {
   character.currentTribute_ = 0;
   character.compassState_ = 3;
   character.skillWindowShowHelp_ = 1;
+  character.weaponSwapActive_ = false;
+  character.weaponSwapEnabled_ = false;
+  character.texture_ = 'creatures/pc/hero02.tex';
   
-  expect(reader.read()).toEqual(character);
+  expect(reader.read()).toStrictEqual(character);
 });
 
 test('Read freshly created woman hc character', async () => {
@@ -52,6 +55,9 @@ test('Read freshly created woman hc character', async () => {
   character.currentTribute_ = 0;
   character.compassState_ = 3;
   character.skillWindowShowHelp_ = 1;
-  
-  expect(reader.read()).toEqual(character);
+  character.weaponSwapActive_ = false;
+  character.weaponSwapEnabled_ = false;
+  character.texture_ = '';
+
+  expect(reader.read()).toStrictEqual(character);
 });

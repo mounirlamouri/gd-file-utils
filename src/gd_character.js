@@ -61,6 +61,15 @@ class GDCharacter {
     /** Whether the skill window should show help. */
     // TODO: probably boolean.
     this.skillWindowShowHelp_ = 0;
+
+    /** Whether weapon swap is active. */
+    this.weaponSwapActive_ = false;
+
+    /** Whether weapon swap is enabled. */
+    this.weaponSwapEnabled_ = false;
+
+    /** Texture?? */
+    this.texture_ = '';
   }
 }
 
