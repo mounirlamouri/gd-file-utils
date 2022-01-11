@@ -145,6 +145,17 @@
 
     return { 'ret': ret, 'length': length, 'end': end }
   }
+
+  readBlockEnd(block) {
+    if (this.read_offset_ != block.end) {
+      console.log(this.read_offset_ + " " + block.end);
+      throw new Error("Block didn't end at the expected position!");
+    }
+
+    if (this.readInt(false /* keyUpdate */) != 0) {
+      throw new Error("Hardcoded byte set to 0 wasn't found at the end of the block!")
+    }
+  }
 }
 
 module.exports = {GDFileReader}

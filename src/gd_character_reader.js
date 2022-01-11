@@ -47,11 +47,13 @@ class GDCharacterReader {
     this.character_.weaponSwapActive_ = this.reader_.readByte() ? true : false;
     this.character_.weaponSwapEnabled_ = this.reader_.readByte() ? true : false;
     this.character_.texture_ = this.reader_.readString();
-    this.character_.unknown_ = this.reader_.readByte();
+    this.character_.unknown_ = this.reader_.readInt();
 
     for (let i = 0; i < 39; ++i) {
       this.character_.lootFilter_[i] = this.reader_.readByte() ? true : false;
     }
+
+    this.reader_.readBlockEnd(block);
   }
 
   /**
