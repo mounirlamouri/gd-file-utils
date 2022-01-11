@@ -106,7 +106,12 @@
     return ret[0];
   }
 
-  readInt() {
+  /**
+   * 
+   * @param {boolean=} keyUpdate Whether updateKey_ should be called (optional)
+   * @returns parsed integer
+   */
+  readInt(keyUpdate = true) {
     const data = new DataView(this.buffer_, this.read_offset_, 4);
     this.read_offset_ += 4;
 
@@ -114,7 +119,9 @@
     let ret = new Uint32Array(1);
     ret[0] = value ^ this.key_[0];
 
-    this.updateKey_([data.getUint8(0), data.getUint8(1), data.getUint8(2), data.getUint8(3)]);
+    if (keyUpdate) {
+      this.updateKey_([data.getUint8(0), data.getUint8(1), data.getUint8(2), data.getUint8(3)]);
+    }
 
     return ret[0];
   }

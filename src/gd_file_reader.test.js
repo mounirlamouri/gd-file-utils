@@ -133,3 +133,15 @@ test('Basic readWString() check', () => {
 
   expect(reader.readWString()).toBe("Ó¬Ó");
 });
+
+test('Basic readInt() check without key update', () => {
+  const data = new Uint8Array([40, 9, 75, 111, 1, 2, 3, 4, 1, 2 , 3, 4]);
+
+  let reader = new GDFileReader(data.buffer);
+  reader.readKey();
+
+  // If the key isn't updated, reading the same 4-bytes twice [1, 2, 3, 4] will
+  // yield the same value.
+  expect(reader.readInt(false /* keyUpdate */)).toBe(0x3e1d5e7c);
+  expect(reader.readInt(false /* keyUpdate */)).toBe(0x3e1d5e7c);
+});
