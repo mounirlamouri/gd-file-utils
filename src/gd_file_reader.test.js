@@ -78,3 +78,34 @@ test('updateTable_() behaviour with one byte', () => {
 
   expect(reader.key_).toEqual(new Uint32Array([40]));
 });
+
+test('Basic readInt() check', () => {
+  const data = new Uint8Array([40, 9, 75, 111, 1, 2, 3, 4]);
+
+  let reader = new GDFileReader(data.buffer);
+  reader.readKey();
+
+  expect(reader.readInt()).toBe(0x3e1d5e7c);
+});
+
+test('updateTable_() behaviour with 4 bytes', () => {
+  let reader = new GDFileReader(null);
+  reader.key_[0] = 42;
+  for (let i = 0; i < reader.table_.length; ++i) {
+    reader.table_[i] = i;
+  }
+
+  reader.updateKey_([32, 16, 8, 4]);
+
+  expect(reader.key_).toEqual(new Uint32Array(['22']));
+});
+
+test('readByte() after readInt()', () => {
+  const data = new Uint8Array([40, 9, 75, 111, 1, 2, 3, 4, 0]);
+
+  let reader = new GDFileReader(data.buffer);
+  reader.readKey();
+
+  expect(reader.readInt()).toBe(0x3e1d5e7c);
+  expect(reader.readByte()).toBe(201);
+});
