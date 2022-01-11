@@ -134,6 +134,30 @@ test('Basic readWString() check', () => {
   expect(reader.readWString()).toBe("Ó¬Ó");
 });
 
+test('readString() of length 0', () => {
+  const data = new Uint8Array([40, 9, 75, 111, 0, 0, 0, 0]);
+
+  let reader = new GDFileReader(data.buffer);
+  reader.readKey();
+
+  // Force key to 0 to force the string length.
+  reader.key_[0] = 0;
+
+  expect(reader.readString()).toBe("");
+});
+
+test('readWString() of length 0', () => {
+  const data = new Uint8Array([40, 9, 75, 111, 0, 0, 0, 0]);
+
+  let reader = new GDFileReader(data.buffer);
+  reader.readKey();
+
+  // Force key to 0 to force the string length.
+  reader.key_[0] = 0;
+
+  expect(reader.readWString()).toBe("");
+});
+
 test('Basic readInt() check without key update', () => {
   const data = new Uint8Array([40, 9, 75, 111, 1, 2, 3, 4, 1, 2 , 3, 4]);
 

@@ -50,11 +50,15 @@
   readStringInternal_(wide) {
     const length = this.readInt();
 
-    if (length <= 0) {
-      throw new Error("String length must be >= 0")
+    if (length < 0) {
+      throw new Error("String length must be > 0")
     }
     if ((this.read_offset_ + length) > this.buffer_.byteLength) {
       throw new Error("String cannot be read before reaching end of file")
+    }
+
+    if (length == 0) {
+      return "";
     }
     
     let bytes = new Uint8Array(length);
