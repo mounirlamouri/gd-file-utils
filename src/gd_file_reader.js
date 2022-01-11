@@ -137,6 +137,14 @@
   readString() {
     return this.readStringInternal_(false /* wide */);
   }
+
+  readBlockStart() {
+    const ret = this.readInt();
+    const length = this.readInt(false /* keyUpdate */);
+    const end = this.read_offset_ + length;
+
+    return { 'ret': ret, 'length': length, 'end': end }
+  }
 }
 
 module.exports = {GDFileReader}

@@ -169,3 +169,12 @@ test('Basic readInt() check without key update', () => {
   expect(reader.readInt(false /* keyUpdate */)).toBe(0x3e1d5e7c);
   expect(reader.readInt(false /* keyUpdate */)).toBe(0x3e1d5e7c);
 });
+
+test('Basic readBlockStart() check', () => {
+  const data = new Uint8Array([40, 9, 75, 111, 1, 2, 3, 4, 1, 2 , 3, 4]);
+
+  let reader = new GDFileReader(data.buffer);
+  reader.readKey();
+
+  expect(reader.readBlockStart()).toEqual({ret: 1042112124, length: 1731237320, end: 1731237332});
+});
