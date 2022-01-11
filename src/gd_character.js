@@ -74,6 +74,56 @@ class GDCharacter {
     /** Unknown byte. */
     // TODO: what is it? so far, the read value is 39 on new characters.
     this.unknown_ = 0;
+
+    /**
+     * Loot filter settings (booleans).
+     * Values are:
+     * < Quality >
+     * 0: Common
+     * 1: Magical
+     * 2: Rare
+     * 3: Monster Infrequent
+     * 4: Epic
+     * 5: Legendary
+     * 6: Sets
+     * 7: Always Show Uniques
+     * < Type >
+     * 8: 1h melee
+     * 9: 2h melee
+     * 10: 1h: range
+     * 11: 2h: range
+     * 12: Dagger / Scepter
+     * 13: Caster Off-hand
+     * 14: Shield
+     * 15: Armor
+     * 16: Accessories
+     * 17: Components
+     * < Damage Type >
+     * 18: Physical
+     * 19: Pierce
+     * 20: Fire
+     * 21: Cold
+     * 22: Lightning
+     * 23: Acid
+     * 24: Vitality
+     * 25: Aether
+     * 26: Chaos
+     * 27: Bleed
+     * 28: Pet Bonuses
+     * < Player >
+     * 29: My Masteries
+     * 30: Other Masteries
+     * 31: Speed
+     * 32: Cooldown Reduction
+     * 33: Critical Damage
+     * 34: Offensive Ability
+     * 35: Defensive Ability
+     * 36: Resistances
+     * 37: Retaliation
+     * < Quality Again >
+     * 38: Always Show Double Rare
+    */
+    this.lootFilter_ = new Array(39);
   }
 }
 

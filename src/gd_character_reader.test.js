@@ -29,6 +29,10 @@ test('Read freshly created man sc character', async () => {
   character.weaponSwapEnabled_ = false;
   character.texture_ = 'creatures/pc/hero02.tex';
   character.unknown_ = 39;
+  character.lootFilter_ = [ true, true, true, true, true, true, true, true,
+    true, true, true, true, true, true, true, true, true, true, true, true,
+    true, false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false ];
 
   expect(reader.read()).toStrictEqual(character);
 });
@@ -60,6 +64,10 @@ test('Read freshly created woman hc character', async () => {
   character.weaponSwapEnabled_ = false;
   character.texture_ = '';
   character.unknown_ = 39;
+  character.lootFilter_ = [ true, true, true, true, true, true, true, true,
+    true, true, true, true, true, true, true, true, true, true, true, true,
+    true, false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false ];
 
   expect(reader.read()).toStrictEqual(character);
 });
