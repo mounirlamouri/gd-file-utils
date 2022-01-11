@@ -57,3 +57,24 @@ test('Checks key_ and table_ values after reading the first 4 bytes', () => {
     expect(reader.table_[i]).toEqual(expectedTable[i]);
   }
 });
+
+test('Basic readByte() check', () => {
+  const data = new Uint8Array([40, 9, 75, 111, 4]);
+
+  let reader = new GDFileReader(data.buffer);
+  reader.readKey();
+
+  expect(reader.readByte()).toBe(121);
+});
+
+test('updateTable_() behaviour with one byte', () => {
+  let reader = new GDFileReader(null);
+  reader.key_[0] = 42;
+  for (let i = 0; i < reader.table_.length; ++i) {
+    reader.table_[i] = i;
+  }
+
+  reader.updateKey_([2]);
+
+  expect(reader.key_).toEqual(new Uint32Array([40]));
+});

@@ -30,6 +30,17 @@
     this.table_ = new Uint32Array(256);
   }
 
+  /**
+   * Update the key_ based on the recently read |bytes|. Involves updating the
+   * table_.
+   * @param {!Array} bytes 
+   */
+  updateKey_(bytes) {
+    for (let i = 0; i < bytes.length; ++i) {
+      this.key_[0] ^= this.table_[bytes[i]];
+    }
+  }
+
   readKey() {
     const data = new Uint32Array(this.buffer_, this.read_offset_, 1);
     this.read_offset_ += 4;
@@ -57,6 +68,19 @@
 
       this.table_[i] = key[0];
     }
+  }
+
+  readByte() {
+    const data = new Uint8Array(this.buffer_, this.read_offset_, 1);
+    this.read_offset_ += 1;
+
+    const value = data[0];
+    let ret = new Uint8Array(1);
+    ret[0] = value ^ this.key_[0];
+
+    this.updateKey_([data[0]]);
+
+    return ret[0];
   }
 }
 
