@@ -55,16 +55,7 @@
     // Setup table_.
     for (let i = 0; i < this.table_.length; ++i) {
       key[0] = key[0] >>> 1 | key[0] << 31;
-
-      // TODO: should be:
-      // key[0] *= 39916801;
-      // But in JS, this would be computed to 69123175292846030 then the value
-      // would be converted to uint32_t which is different from other languages.
-      // Doing additions to work around the problem...
-      const k = key[0]; // added every iteration.
-      for (let i = 1; i < 39916801; ++i) {
-          key[0] += k;
-      }
+      key[0] = Math.imul(key[0], 39916801);
 
       this.table_[i] = key[0];
     }
