@@ -47,6 +47,7 @@ class GDCharacterReader {
     this.character_.weaponSwapActive_ = this.reader_.readByte() ? true : false;
     this.character_.weaponSwapEnabled_ = this.reader_.readByte() ? true : false;
     this.character_.texture_ = this.reader_.readString();
+    this.character_.unknown_ = this.reader_.readByte();
   }
 
   /**

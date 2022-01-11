@@ -70,6 +70,10 @@ class GDCharacter {
 
     /** Texture?? */
     this.texture_ = '';
+
+    /** Unknown byte. */
+    // TODO: what is it? so far, the read value is 39 on new characters.
+    this.unknown_ = 0;
   }
 }
 
