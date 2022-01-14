@@ -46,6 +46,9 @@ test('Read freshly created man sc character', async () => {
   character.health_ = 250.0;
   character.energy_ = 250.0;
 
+  character.inventory_ = {};
+  character.stash_ = [{ width: 0, height: 0 }];
+
   expect(reader.read()).toStrictEqual(character);
 });
 
@@ -92,6 +95,9 @@ test('Read freshly created woman hc character', async () => {
   character.spirit_ = 50.0;
   character.health_ = 250.0;
   character.energy_ = 250.0;
+
+  character.inventory_ = {};
+  character.stash_ = [{ width: 0, height: 0 }];
   
   expect(reader.read()).toStrictEqual(character);
 });

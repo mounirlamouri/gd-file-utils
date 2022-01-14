@@ -157,6 +157,12 @@ class GDCharacter {
 
     /** Character energy points. */
     this.energy_ = 0.0;
+
+    /** Character's inventory. */
+    this.inventory_ = {};
+
+    /** Character's personal stash. */
+    this.stash_ = [];
   }
 }
 

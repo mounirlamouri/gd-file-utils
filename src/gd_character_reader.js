@@ -81,6 +81,63 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  readInventory_() {
+    let block = this.reader_.readBlockStart();
+
+    if (block.ret != 3) {
+      throw new Error('first int of inventory block is expected to be 3');
+    }
+    if (this.reader_.readInt() != 4) { // version
+      throw new Error('Hardcoded int set to 4 not found!')
+    }
+
+    // Check if the inventory needs to be parsed.
+    if (this.reader_.readByte()) {
+      // TODO
+    }
+
+    this.reader_.readBlockEnd(block);
+  }
+
+  readStashTab_() {
+    let block = this.reader_.readBlockStart();
+
+    if (block.ret != 0) {
+      throw new Error('first int of stash tab block is expected to be 0');
+    }
+
+    let stash = {};
+    stash.width = this.reader_.readInt();
+    stash.height = this.reader_.readInt();
+
+    const itemCount = this.reader_.readInt();
+    for (let i = 0; i < itemCount; ++i) {
+      // TODO: items
+    }
+
+    this.reader_.readBlockEnd(block);
+
+    return stash;
+  }
+
+  readStash_() {
+    let block = this.reader_.readBlockStart();
+
+    if (block.ret != 4) {
+      throw new Error('first int of stash block is expected to be 4');
+    }
+    if (this.reader_.readInt() != 6) { // version
+      throw new Error('Hardcoded int set to 6 not found!')
+    }
+
+    const stashCount = this.reader_.readInt();
+    for (let i = 0; i < stashCount; ++i) {
+      this.character_.stash_[i] = this.readStashTab_();
+    }
+
+    this.reader_.readBlockEnd(block);
+  }
+
   /**
    * 
    * @returns {GDCharacter} returns the parsed character
@@ -122,6 +179,10 @@ class GDCharacterReader {
     this.readInfo_();
 
     this.readStats_();
+
+    this.readInventory_();
+
+    this.readStash_();
 
     return this.character_;
   }
