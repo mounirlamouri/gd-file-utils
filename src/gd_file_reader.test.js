@@ -178,3 +178,12 @@ test('Basic readBlockStart() check', () => {
 
   expect(reader.readBlockStart()).toEqual({ret: 1042112124, length: 1731237320, end: 1731237332});
 });
+
+test('Basic readFloat() check', () => {
+  const data = new Uint8Array([40, 9, 75, 111, 1, 2, 3, 4]);
+
+  let reader = new GDFileReader(data.buffer);
+  reader.readKey();
+
+  expect(reader.readFloat()).toBe(0.1536807417869568);
+});

@@ -130,6 +130,12 @@
     return ret[0];
   }
 
+  readFloat() {
+    const data = new DataView(new ArrayBuffer(4));
+    data.setInt32(0, this.readInt(), true /* littleIndian */);
+    return data.getFloat32(0, true /* little Indian */);
+  }
+
   readWString() {
     return this.readStringInternal_(true /* wide */);
   }
