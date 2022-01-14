@@ -124,6 +124,39 @@ class GDCharacter {
      * 38: Always Show Double Rare
     */
     this.lootFilter_ = new Array(39);
+
+    /** Character level. */
+    this.level_ = 0;
+
+    /** Character cumulated experience points. */
+    this.experience_ = 0;
+
+    /** Character attribute (physique/cunning/spirit) points unspent. */
+    this.attributePointsUnspent_ = 0;
+
+    /** Character skill points unspent. */
+    this.skillPointsUnspent_ = 0;
+
+    /** Character devotion points unspent. */
+    this.devotionPointsUnspent_ = 0;
+
+    /** Character devotion points unlocked. */
+    this.totalDevotionUnlocked_ = 0;
+
+    /** Character physique attribute points. */
+    this.physique_ = 0.0;
+
+    /** Character cunning attribute points. */
+    this.cunning_ = 0.0;
+
+    /** Character spirit attribute points. */
+    this.spirit_ = 0.0;
+
+    /** Character health points. */
+    this.health_ = 0.0;
+
+    /** Character energy points. */
+    this.energy_ = 0.0;
   }
 }
 

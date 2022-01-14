@@ -34,6 +34,18 @@ test('Read freshly created man sc character', async () => {
     false, false, false, false, false, false, false, false, false, false, false,
     false, false, false, false, false, false, false, false ];
 
+  character.level_ = 1;
+  character.experience_ = 0;
+  character.attributePointsUnspent_ = 0;
+  character.skillPointsUnspent_ = 0;
+  character.devotionPointsUnspent_ = 0;
+  character.totalDevotionUnlocked_ = 0;
+  character.physique_ = 50.0;
+  character.cunning_ = 50.0;
+  character.spirit_ = 50.0;
+  character.health_ = 250.0;
+  character.energy_ = 250.0;
+
   expect(reader.read()).toStrictEqual(character);
 });
 
@@ -69,5 +81,17 @@ test('Read freshly created woman hc character', async () => {
     false, false, false, false, false, false, false, false, false, false, false,
     false, false, false, false, false, false, false, false ];
 
+  character.level_ = 1;
+  character.experience_ = 0;
+  character.attributePointsUnspent_ = 0;
+  character.skillPointsUnspent_ = 0;
+  character.devotionPointsUnspent_ = 0;
+  character.totalDevotionUnlocked_ = 0;
+  character.physique_ = 50.0;
+  character.cunning_ = 50.0;
+  character.spirit_ = 50.0;
+  character.health_ = 250.0;
+  character.energy_ = 250.0;
+  
   expect(reader.read()).toStrictEqual(character);
 });

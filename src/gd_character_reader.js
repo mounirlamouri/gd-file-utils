@@ -56,6 +56,31 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  readStats_() {
+    let block = this.reader_.readBlockStart();
+
+    if (block.ret != 2) {
+      throw new Error('first int of stats block is expected to be 2');
+    }
+    if (this.reader_.readInt() != 8) { // version
+      throw new Error('Hardcoded int set to 8 not found!')
+    }
+
+    this.character_.level_ = this.reader_.readInt();
+    this.character_.experience_ = this.reader_.readInt();
+    this.character_.attributePointsUnspent_ = this.reader_.readInt();
+    this.character_.skillPointsUnspent_ = this.reader_.readInt();
+    this.character_.devotionPointsUnspent_ = this.reader_.readInt();
+    this.character_.totalDevotionUnlocked_ = this.reader_.readInt();
+    this.character_.physique_ = this.reader_.readFloat();
+    this.character_.cunning_ = this.reader_.readFloat();
+    this.character_.spirit_ = this.reader_.readFloat();
+    this.character_.health_ = this.reader_.readFloat();
+    this.character_.energy_ = this.reader_.readFloat();
+
+    this.reader_.readBlockEnd(block);
+  }
+
   /**
    * 
    * @returns {GDCharacter} returns the parsed character
@@ -95,6 +120,8 @@ class GDCharacterReader {
     this.readUid_();
 
     this.readInfo_();
+
+    this.readStats_();
 
     return this.character_;
   }
