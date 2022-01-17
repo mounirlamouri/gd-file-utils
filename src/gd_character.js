@@ -170,6 +170,9 @@ class GDCharacter {
 
     /** Character's teleport list. */
     this.teleports_ = new Array(3);
+
+    /** Character's markers list. */
+    this.markers_ = new Array(3);
   }
 }
 

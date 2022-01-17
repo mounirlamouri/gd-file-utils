@@ -58,6 +58,8 @@ test('Read freshly created man sc character', async () => {
 
   character.teleports_ = [[], [], []];
 
+  character.markers_ = [[], [], []];
+
   expect(reader.read()).toStrictEqual(character);
 });
 
@@ -116,6 +118,8 @@ test('Read freshly created woman hc character', async () => {
   ];
 
   character.teleports_ = [[], [], []];
+
+  character.markers_ = [[], [], []];
 
   expect(reader.read()).toStrictEqual(character);
 });

@@ -182,6 +182,27 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  readMarkers_() {
+    let block = this.reader_.readBlockStart();
+
+    if (block.ret != 7) {
+      throw new Error('first int of markers block is expected to be 7');
+    }
+    if (this.reader_.readInt() != 1) { // version
+      throw new Error('Hardcoded int set to 1 not found!')
+    }
+
+    for (let i = 0; i < this.character_.markers_.length; ++i) {
+      const length = this.reader_.readInt();
+      this.character_.markers_[i] = new Array(length);
+      for (let j = 0; j < length; ++j) {
+        this.character_.markers_[i][j] = this.reader_.readUid();
+      }
+    }
+  
+    this.reader_.readBlockEnd(block);
+  }
+
   /**
    * 
    * @returns {GDCharacter} returns the parsed character
@@ -231,6 +252,8 @@ class GDCharacterReader {
     this.readSpawnLocations_();
 
     this.readTeleports_();
+
+    this.readMarkers_();
 
     return this.character_;
   }
