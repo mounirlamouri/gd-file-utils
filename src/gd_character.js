@@ -167,6 +167,9 @@ class GDCharacter {
     /** Character's spawn locations per difficulty level. */
     this.spawnDifficulty_ = new Array(3);
     this.spawnLocation_ = new Array(3);
+
+    /** Character's teleport list. */
+    this.teleports_ = new Array(3);
   }
 }
 

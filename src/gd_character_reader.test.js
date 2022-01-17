@@ -56,6 +56,8 @@ test('Read freshly created man sc character', async () => {
     new Uint8Array([ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ])
   ];
 
+  character.teleports_ = [[], [], []];
+
   expect(reader.read()).toStrictEqual(character);
 });
 
@@ -112,6 +114,8 @@ test('Read freshly created woman hc character', async () => {
     new Uint8Array([ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]),
     new Uint8Array([ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ])
   ];
+
+  character.teleports_ = [[], [], []];
 
   expect(reader.read()).toStrictEqual(character);
 });

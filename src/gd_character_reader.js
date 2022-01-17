@@ -161,6 +161,27 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  readTeleports_() {
+    let block = this.reader_.readBlockStart();
+
+    if (block.ret != 6) {
+      throw new Error('first int of telports block is expected to be 6');
+    }
+    if (this.reader_.readInt() != 1) { // version
+      throw new Error('Hardcoded int set to 1 not found!')
+    }
+
+    for (let i = 0; i < this.character_.teleports_.length; ++i) {
+      const length = this.reader_.readInt();
+      this.character_.teleports_[i] = new Array(length);
+      for (let j = 0; j < length; ++j) {
+        this.character_.teleports_[i][j] = this.reader_.readUid();
+      }
+    }
+
+    this.reader_.readBlockEnd(block);
+  }
+
   /**
    * 
    * @returns {GDCharacter} returns the parsed character
@@ -208,6 +229,8 @@ class GDCharacterReader {
     this.readStash_();
 
     this.readSpawnLocations_();
+
+    this.readTeleports_();
 
     return this.character_;
   }
