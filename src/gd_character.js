@@ -173,6 +173,9 @@ class GDCharacter {
 
     /** Character's markers list. */
     this.markers_ = new Array(3);
+
+    /** Character's shrines list. */
+    this.shrines_ = new Array(6);
   }
 }
 

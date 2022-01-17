@@ -203,6 +203,27 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  readShrines_() {
+    let block = this.reader_.readBlockStart();
+
+    if (block.ret != 17) {
+      throw new Error('first int of shrines block is expected to be 17');
+    }
+    if (this.reader_.readInt() != 2) { // version
+      throw new Error('Hardcoded int set to 1 not found!')
+    }
+
+    for (let i = 0; i < this.character_.shrines_.length; ++i) {
+      const length = this.reader_.readInt();
+      this.character_.shrines_[i] = new Array(length);
+      for (let j = 0; j < length; ++j) {
+        this.character_.shrines_[i][j] = this.reader_.readUid();
+      }
+    }
+  
+    this.reader_.readBlockEnd(block);
+  }
+
   /**
    * 
    * @returns {GDCharacter} returns the parsed character
@@ -254,6 +275,8 @@ class GDCharacterReader {
     this.readTeleports_();
 
     this.readMarkers_();
+
+    this.readShrines_();
 
     return this.character_;
   }
