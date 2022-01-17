@@ -20,9 +20,7 @@ class GDCharacterReader {
   }
 
   readUid_() {
-    for (let i = 0; i < this.character_.uid_.length; ++i) {
-      this.character_.uid_[i] = this.reader_.readByte();
-    }
+    this.character_.uid_ = this.reader_.readUid();
   }
 
   readInfo_() {
@@ -138,6 +136,31 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  readSpawnLocations_() {
+    let block = this.reader_.readBlockStart();
+
+    if (block.ret != 5) {
+      throw new Error('first int of spawn block is expected to be 5');
+    }
+    if (this.reader_.readInt() != 1) { // version
+      throw new Error('Hardcoded int set to 1 not found!')
+    }
+
+    for (let i = 0; i < this.character_.spawnDifficulty_.length; ++i) {
+      const length = this.reader_.readInt();
+      this.character_.spawnDifficulty_[i] = new Array(length);
+      for (let j = 0; j < length; ++j) {
+        this.character_.spawnDifficulty_[i][j] = this.reader_.readUid();
+      }
+    }
+
+    for (let i = 0; i < this.character_.spawnLocation_.length; ++i) {
+      this.character_.spawnLocation_[i] = this.reader_.readUid();
+    }
+
+    this.reader_.readBlockEnd(block);
+  }
+
   /**
    * 
    * @returns {GDCharacter} returns the parsed character
@@ -183,6 +206,8 @@ class GDCharacterReader {
     this.readInventory_();
 
     this.readStash_();
+
+    this.readSpawnLocations_();
 
     return this.character_;
   }

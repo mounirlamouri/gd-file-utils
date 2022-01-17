@@ -162,6 +162,20 @@
       throw new Error("Hardcoded byte set to 0 wasn't found at the end of the block!")
     }
   }
+
+  /**
+   * Reads a uid type (16 bytes)
+   * @returns Uint8Array[16]
+   */
+  readUid() {
+    let ret = new Uint8Array(16);
+    
+    for (let i = 0; i < ret.length; ++i) {
+      ret[i] = this.readByte();
+    }
+
+    return ret;
+  }
 }
 
 module.exports = {GDFileReader}

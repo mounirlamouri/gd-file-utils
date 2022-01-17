@@ -163,6 +163,10 @@ class GDCharacter {
 
     /** Character's personal stash. */
     this.stash_ = [];
+
+    /** Character's spawn locations per difficulty level. */
+    this.spawnDifficulty_ = new Array(3);
+    this.spawnLocation_ = new Array(3);
   }
 }
 

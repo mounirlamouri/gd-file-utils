@@ -187,3 +187,18 @@ test('Basic readFloat() check', () => {
 
   expect(reader.readFloat()).toBe(0.1536807417869568);
 });
+
+test('Basic readUid() check', () => {
+  const data = new Uint8Array([40, 9, 75, 111, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+    11, 12, 13, 14, 15, 16]);
+
+  let reader = new GDFileReader(data.buffer);
+  reader.readKey();
+
+  const expectedUid = [124,  96, 238,  46, 204, 190,  7, 212, 187,  15, 213,
+    191, 8, 208,  60, 213];
+  const uid = reader.readUid();
+  for (let i = 0; i < uid.length; ++i) {
+    expect(uid[i]).toEqual(expectedUid[i]);
+  }
+});
