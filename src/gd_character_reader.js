@@ -271,6 +271,25 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  readLoreNotes_() {
+    let block = this.reader_.readBlockStart();
+
+    if (block.ret != 12) {
+      throw new Error('first int of lore block is expected to be 12');
+    }
+    if (this.reader_.readInt() != 1) { // version
+      throw new Error('Hardcoded int set to 1 not found!')
+    }
+
+    const loreNotesCount = this.reader_.readInt();
+    this.character_.loreNotes_.length = loreNotesCount;
+    for (let i = 0; i < loreNotesCount; ++i) {
+      // TODO
+    }
+    
+    this.reader_.readBlockEnd(block);
+  }
+
   /**
    * 
    * @returns {GDCharacter} returns the parsed character
@@ -326,6 +345,8 @@ class GDCharacterReader {
     this.readShrines_();
 
     this.readSkills_();
+
+    this.readLoreNotes_();
 
     return this.character_;
   }

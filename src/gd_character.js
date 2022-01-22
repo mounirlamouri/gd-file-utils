@@ -191,6 +191,9 @@ class GDCharacter {
 
     /** Number of times a devotion point was reclaimed. */
     this.devotionPointsReclaimed_ = 0;
+
+    /** Lore notes collected by character. */
+    this.loreNotes_ = [];
   }
 }
 

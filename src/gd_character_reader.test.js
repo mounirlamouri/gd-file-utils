@@ -128,6 +128,8 @@ test('Read freshly created man sc character', async () => {
   character.skillPointsReclaimed_ = 0;
   character.devotionPointsReclaimed_ = 0;
 
+  character.loreNotes_ = [];
+
   expect(reader.read()).toStrictEqual(character);
 });
 
@@ -255,6 +257,8 @@ test('Read freshly created woman hc character', async () => {
   character.masteriesAllowed_ = 0;
   character.skillPointsReclaimed_ = 0;
   character.devotionPointsReclaimed_ = 0;
+
+  character.loreNotes_ = [];
 
   expect(reader.read()).toStrictEqual(character);
 });
