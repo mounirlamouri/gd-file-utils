@@ -176,6 +176,21 @@ class GDCharacter {
 
     /** Character's shrines list. */
     this.shrines_ = new Array(6);
+
+    /** Character's skills. */
+    this.skills_ = [];
+
+    /** Character's skills from items. */
+    this.itemSkills_ = [];
+
+    /** Number of masteries allowed. */
+    this.masteriesAllowed_ = 0;
+
+    /** Number of time a skill points was reclaimed. */
+    this.skillPointsReclaimed_ = 0;
+
+    /** Number of times a devotion point was reclaimed. */
+    this.devotionPointsReclaimed_ = 0;
   }
 }
 

@@ -1,5 +1,6 @@
 const {GDCharacterReader} = require('./gd_character_reader');
 const {GDCharacter} = require('./gd_character');
+const {GDSkill} = require('./gd_skill');
 const fs = require('fs/promises');
 
 test('Read freshly created man sc character', async () => {
@@ -59,6 +60,73 @@ test('Read freshly created man sc character', async () => {
   character.teleports_ = [[], [], []];
   character.markers_ = [[], [], []];
   character.shrines_ = [[], [], [], [], [], []];
+
+  character.skills_ = [
+    new GDSkill({
+      "active": 0,
+      "autoCastController": "",
+      "autoCastSkill": "",
+      "devotionLevel": 0,
+      "enabled": false,
+      "experience": 0,
+      "level": 1,
+      "name": "records/skills/default/defaultkickattack.dbr",
+      "unknown1": 0,
+      "unknown2": 0,
+    }),
+    new GDSkill({
+      "active": 0,
+      "autoCastController": "",
+      "autoCastSkill": "",
+      "devotionLevel": 0,
+      "enabled": false,
+      "experience": 0,
+      "level": 1,
+      "name": "records/skills/default/defaultwpbasicattack.dbr",
+      "unknown1": 0,
+      "unknown2": 0,
+    }),
+    new GDSkill({
+      "active": 0,
+      "autoCastController": "",
+      "autoCastSkill": "",
+      "devotionLevel": 0,
+      "enabled": true,
+      "experience": 0,
+      "level": 1,
+      "name": "records/skills/default/defaultmoveto.dbr",
+      "unknown1": 0,
+      "unknown2": 0,
+    }),
+    new GDSkill({
+      "active": 0,
+      "autoCastController": "",
+      "autoCastSkill": "",
+      "devotionLevel": 0,
+      "enabled": true,
+      "experience": 0,
+      "level": 1,
+      "name": "records/skills/default/defaultweaponattack.dbr",
+      "unknown1": 0,
+      "unknown2": 0,
+    }),
+    new GDSkill({
+      "active": 0,
+      "autoCastController": "",
+      "autoCastSkill": "",
+      "devotionLevel": 0,
+      "enabled": true,
+      "experience": 0,
+      "level": 1,
+      "name": "records/skills/default/defaultpetattack.dbr",
+      "unknown1": 0,
+      "unknown2": 0,
+    }),
+  ];
+  character.itemSkills_ = [];
+  character.masteriesAllowed_ = 0;
+  character.skillPointsReclaimed_ = 0;
+  character.devotionPointsReclaimed_ = 0;
 
   expect(reader.read()).toStrictEqual(character);
 });
@@ -120,6 +188,73 @@ test('Read freshly created woman hc character', async () => {
   character.teleports_ = [[], [], []];
   character.markers_ = [[], [], []];
   character.shrines_ = [[], [], [], [], [], []];
+
+  character.skills_ = [
+    new GDSkill({
+      "active": 0,
+      "autoCastController": "",
+      "autoCastSkill": "",
+      "devotionLevel": 0,
+      "enabled": false,
+      "experience": 0,
+      "level": 1,
+      "name": "records/skills/default/defaultkickattack.dbr",
+      "unknown1": 0,
+      "unknown2": 0,
+    }),
+    new GDSkill({
+      "active": 0,
+      "autoCastController": "",
+      "autoCastSkill": "",
+      "devotionLevel": 0,
+      "enabled": false,
+      "experience": 0,
+      "level": 1,
+      "name": "records/skills/default/defaultwpbasicattack.dbr",
+      "unknown1": 0,
+      "unknown2": 0,
+    }),
+    new GDSkill({
+      "active": 0,
+      "autoCastController": "",
+      "autoCastSkill": "",
+      "devotionLevel": 0,
+      "enabled": true,
+      "experience": 0,
+      "level": 1,
+      "name": "records/skills/default/defaultmoveto.dbr",
+      "unknown1": 0,
+      "unknown2": 0,
+    }),
+    new GDSkill({
+      "active": 0,
+      "autoCastController": "",
+      "autoCastSkill": "",
+      "devotionLevel": 0,
+      "enabled": true,
+      "experience": 0,
+      "level": 1,
+      "name": "records/skills/default/defaultweaponattack.dbr",
+      "unknown1": 0,
+      "unknown2": 0,
+    }),
+    new GDSkill({
+      "active": 0,
+      "autoCastController": "",
+      "autoCastSkill": "",
+      "devotionLevel": 0,
+      "enabled": true,
+      "experience": 0,
+      "level": 1,
+      "name": "records/skills/default/defaultpetattack.dbr",
+      "unknown1": 0,
+      "unknown2": 0,
+    }),
+  ];
+  character.itemSkills_ = [];
+  character.masteriesAllowed_ = 0;
+  character.skillPointsReclaimed_ = 0;
+  character.devotionPointsReclaimed_ = 0;
 
   expect(reader.read()).toStrictEqual(character);
 });

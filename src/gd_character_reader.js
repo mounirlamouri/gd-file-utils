@@ -1,5 +1,6 @@
 const {GDCharacter} = require('./gd_character');
 const {GDFileReader} = require('./gd_file_reader');
+const {GDSkill} = require('./gd_skill');
 
 class GDCharacterReader {
   /**
@@ -224,6 +225,52 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  readCharacterSkill_() {
+    let skill = {};
+    
+    skill.name = this.reader_.readString();
+    skill.level = this.reader_.readInt();
+    skill.enabled = this.reader_.readByte() ? true : false;
+    skill.devotionLevel = this.reader_.readInt();
+    skill.experience = this.reader_.readInt();
+    skill.active = this.reader_.readInt();
+    skill.unknown1 = this.reader_.readByte();
+    skill.unknown2 = this.reader_.readByte();
+    skill.autoCastSkill = this.reader_.readString();
+    skill.autoCastController = this.reader_.readString();
+
+    return new GDSkill(skill);
+  }
+
+  readSkills_() {
+    let block = this.reader_.readBlockStart();
+
+    if (block.ret != 8) {
+      throw new Error('first int of skills block is expected to be 8');
+    }
+    if (this.reader_.readInt() != 5) { // version
+      throw new Error('Hardcoded int set to 1 not found!')
+    }
+
+    const skillCount = this.reader_.readInt();
+    this.character_.skills_.length = skillCount;
+    for (let i = 0; i < skillCount; ++i) {
+      this.character_.skills_[i] = this.readCharacterSkill_();
+    }
+
+    this.character_.masteriesAllowed_ = this.reader_.readInt();
+    this.character_.skillPointsReclaimed_ = this.reader_.readInt();
+    this.character_.devotionPointsReclaimed_ = this.reader_.readInt();
+
+    const itemSkillCount = this.reader_.readInt();
+    this.character_.itemSkills_.length = itemSkillCount;
+    for (let i = 0; i < itemSkillCount; ++i) {
+      // TODO
+    }
+
+    this.reader_.readBlockEnd(block);
+  }
+
   /**
    * 
    * @returns {GDCharacter} returns the parsed character
@@ -277,6 +324,8 @@ class GDCharacterReader {
     this.readMarkers_();
 
     this.readShrines_();
+
+    this.readSkills_();
 
     return this.character_;
   }
