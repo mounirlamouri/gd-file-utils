@@ -194,6 +194,9 @@ class GDCharacter {
 
     /** Lore notes collected by character. */
     this.loreNotes_ = [];
+
+    /** Factions information. */
+    this.factions_ = {};
   }
 }
 

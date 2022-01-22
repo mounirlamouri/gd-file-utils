@@ -290,6 +290,40 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  readFactionInfo_() {
+    let faction = {};
+
+    faction.modified = this.reader_.readByte();
+    faction.unlocked = this.reader_.readByte(); // TODO: boolean?
+    faction.value = this.reader_.readFloat();
+    faction.positiveBoost = this.reader_.readFloat();
+    faction.negativeBoost = this.reader_.readFloat();
+
+    return faction;
+  }
+
+  readFactions_() {
+    let block = this.reader_.readBlockStart();
+
+    if (block.ret != 13) {
+      throw new Error('first int of factions block is expected to be 13');
+    }
+    if (this.reader_.readInt() != 5) { // version
+      throw new Error('Hardcoded int set to 5 not found!')
+    }
+
+    // TODO: what is this int?
+    this.character_.factions_.faction = this.reader_.readInt();
+
+    const factionCount = this.reader_.readInt();
+    this.character_.factions_.info = new Array(factionCount);
+    for (let i = 0; i < factionCount; ++i) {
+      this.character_.factions_.info[i] = this.readFactionInfo_();
+    }
+    
+    this.reader_.readBlockEnd(block);
+  }
+
   /**
    * 
    * @returns {GDCharacter} returns the parsed character
@@ -347,6 +381,8 @@ class GDCharacterReader {
     this.readSkills_();
 
     this.readLoreNotes_();
+
+    this.readFactions_();
 
     return this.character_;
   }
