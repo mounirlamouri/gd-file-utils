@@ -197,6 +197,9 @@ class GDCharacter {
 
     /** Factions information. */
     this.factions_ = {};
+
+    /** UI settings */
+    this.uiSettings_ = null;
   }
 }
 

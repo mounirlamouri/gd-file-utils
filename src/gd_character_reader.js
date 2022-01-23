@@ -1,6 +1,8 @@
 const {GDCharacter} = require('./gd_character');
 const {GDFileReader} = require('./gd_file_reader');
+const {GDHotSlot} = require('./gd_hot_slot');
 const {GDSkill} = require('./gd_skill');
+const {GDUiSettings} = require('./gd_ui_settings');
 
 class GDCharacterReader {
   /**
@@ -324,6 +326,59 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  readHotSlot_() {
+    let slot = {};
+
+    slot.type = this.reader_.readInt();
+
+    if (slot.type == GDHotSlot.Type.Regular) {
+      slot.skill = this.reader_.readString();
+      slot.isItemSkill = this.reader_.readByte() ? true : false;
+      slot.item = this.reader_.readString();
+      slot.location = this.reader_.readInt();
+    } else {
+      // TODO
+    }
+
+    return new GDHotSlot(slot);
+  }
+
+  readUiSettings_() {
+    let block = this.reader_.readBlockStart();
+
+    if (block.ret != 14) {
+      throw new Error('first int of ui settings block is expected to be 14');
+    }
+    if (this.reader_.readInt() != 5) { // version
+      throw new Error('Hardcoded int set to 5 not found!')
+    }
+
+    let settings = {};
+    settings.unknown1 = this.reader_.readByte();
+    settings.unknown2 = this.reader_.readInt();
+    settings.unknown3 = this.reader_.readByte();
+
+    settings.unknown4 = new Array(5);
+    settings.unknown5 = new Array(5);
+    settings.unknown6 = new Array(5);
+    for (let i = 0; i < 5; ++i) {
+      settings.unknown4[i] = this.reader_.readString();
+      settings.unknown5[i] = this.reader_.readString();
+      settings.unknown6[i] = this.reader_.readByte();
+    }
+
+    settings.hotSlots = new Array(46);
+    for (let i = 0; i < 46; ++i) {
+      settings.hotSlots[i] = this.readHotSlot_();
+    }
+
+    settings.cameraDistance = this.reader_.readFloat();
+
+    this.character_.uiSettings_ = new GDUiSettings(settings);
+
+    this.reader_.readBlockEnd(block);
+  }
+
   /**
    * 
    * @returns {GDCharacter} returns the parsed character
@@ -383,6 +438,8 @@ class GDCharacterReader {
     this.readLoreNotes_();
 
     this.readFactions_();
+
+    this.readUiSettings_();
 
     return this.character_;
   }

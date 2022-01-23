@@ -1,7 +1,9 @@
 const {GDCharacterReader} = require('./gd_character_reader');
 const {GDCharacter} = require('./gd_character');
 const {GDSkill} = require('./gd_skill');
+const {GDUiSettings} = require('./gd_ui_settings');
 const fs = require('fs/promises');
+const { GDHotSlot } = require('./gd_hot_slot');
 
 test('Read freshly created man sc character', async () => {
   const buffer = await fs.readFile("test/data/freshly_created.gdc");
@@ -322,6 +324,73 @@ test('Read freshly created man sc character', async () => {
       value: 0,
     }]
   };
+
+  character.uiSettings_ = new GDUiSettings({
+    unknown1: 0,
+    unknown2: 0,
+    unknown3: 0,
+    unknown4: ["", "", "", "", ""],
+    unknown5: ["", "", "", "", ""],
+    unknown6: [1, 0, 0, 0, 0],
+    cameraDistance: 36,
+    hotSlots: [
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot({type: GDHotSlot.Type.Health}),
+      new GDHotSlot({type: GDHotSlot.Type.Energy}),
+      new GDHotSlot({
+        type: GDHotSlot.Type.Regular,
+        skill: "records/skills/default/defaultweaponattack.dbr"
+      }),
+      new GDHotSlot({
+        type: GDHotSlot.Type.Regular,
+        skill: "records/skills/default/defaultweaponattack.dbr"
+      }),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot({type: GDHotSlot.Type.Health}),
+      new GDHotSlot({type: GDHotSlot.Type.Energy}),
+      new GDHotSlot({
+        type: GDHotSlot.Type.Regular,
+        skill: "records/skills/default/defaultweaponattack.dbr"
+      }),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+    ],
+  });
 
   expect(reader.read()).toStrictEqual(character);
 });
@@ -645,6 +714,73 @@ test('Read freshly created woman hc character', async () => {
       value: 0,
     }]
   };
+
+  character.uiSettings_ = new GDUiSettings({
+    unknown1: 0,
+    unknown2: 0,
+    unknown3: 0,
+    unknown4: ["", "", "", "", ""],
+    unknown5: ["", "", "", "", ""],
+    unknown6: [1, 0, 0, 0, 0],
+    cameraDistance: 36,
+    hotSlots: [
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot({type: GDHotSlot.Type.Health}),
+      new GDHotSlot({type: GDHotSlot.Type.Energy}),
+      new GDHotSlot({
+        type: GDHotSlot.Type.Regular,
+        skill: "records/skills/default/defaultweaponattack.dbr"
+      }),
+      new GDHotSlot({
+        type: GDHotSlot.Type.Regular,
+        skill: "records/skills/default/defaultweaponattack.dbr"
+      }),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot({type: GDHotSlot.Type.Health}),
+      new GDHotSlot({type: GDHotSlot.Type.Energy}),
+      new GDHotSlot({
+        type: GDHotSlot.Type.Regular,
+        skill: "records/skills/default/defaultweaponattack.dbr"
+      }),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+      new GDHotSlot(),
+    ],
+  });
 
   expect(reader.read()).toStrictEqual(character);
 });
