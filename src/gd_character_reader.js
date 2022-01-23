@@ -2,6 +2,7 @@ const {GDCharacter} = require('./gd_character');
 const {GDFileReader} = require('./gd_file_reader');
 const {GDHotSlot} = require('./gd_hot_slot');
 const {GDSkill} = require('./gd_skill');
+const {GDPlayStats} = require('./gd_play_stats');
 const {GDUiSettings} = require('./gd_ui_settings');
 
 class GDCharacterReader {
@@ -398,6 +399,85 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  readPlayStats_() {
+    let block = this.reader_.readBlockStart();
+
+    if (block.ret != 16) {
+      throw new Error('first int of stats block is expected to be 16');
+    }
+    if (this.reader_.readInt() != 11) { // version
+      throw new Error('Hardcoded int set to 11 not found!')
+    }
+
+    let stats = {};
+
+    stats.playTime = this.reader_.readInt();
+    stats.deaths = this.reader_.readInt();
+    stats.kills = this.reader_.readInt();
+    stats.experienceFromKills = this.reader_.readInt();
+    stats.healthPotionsUsed = this.reader_.readInt();
+    stats.manaPotionsUsed = this.reader_.readInt();
+    stats.maxLevel = this.reader_.readInt();
+    stats.hitsReceived = this.reader_.readInt();
+    stats.hitsInflicted = this.reader_.readInt();
+    stats.criticalHitsInflicted = this.reader_.readInt();
+    stats.criticalHitsReceived = this.reader_.readInt();
+    stats.greatestDamageInflicted = this.reader_.readFloat();
+
+    stats.greatestMonsterKilledName = new Array(3);
+    stats.greatestMonsterKilledLevel = new Array(3);
+    stats.greatestMonsterKilledLifeAndMana = new Array(3);
+    stats.lastMonsterHit = new Array(3);
+    stats.lastMonsterHitBy = new Array(3);
+    for (let i = 0; i < 3; ++i) {
+      stats.greatestMonsterKilledName[i] = this.reader_.readString();
+      stats.greatestMonsterKilledLevel[i] = this.reader_.readInt();
+      stats.greatestMonsterKilledLifeAndMana[i] = this.reader_.readInt();
+      stats.lastMonsterHit[i] = this.reader_.readString();
+      stats.lastMonsterHitBy[i] = this.reader_.readString();
+    }
+
+    stats.championKills = this.reader_.readInt();
+    stats.lastHit = this.reader_.readFloat();
+    stats.lastHitBy = this.reader_.readFloat();
+    stats.greatestDamageReceived = this.reader_.readFloat();
+    stats.herosKilled = this.reader_.readInt();
+    stats.itemsCrafted = this.reader_.readInt();
+    stats.relicsCrafted = this.reader_.readInt();
+    stats.transcendentRelicsCrafted = this.reader_.readInt();
+    stats.mythicalRelicsCrafted = this.reader_.readInt();
+    stats.shrinesRestored = this.reader_.readInt();
+    stats.oneShotChestsOpened = this.reader_.readInt();
+    stats.loreNotesCollected = this.reader_.readInt();  
+
+    stats.bossKills = new Array(3);
+    for (let i = 0; i < 3; ++i) {
+      stats.bossKills[i] = this.reader_.readInt();
+    }
+
+    stats.survivalWaveTier = this.reader_.readInt();
+    stats.greatestSurvivalScore = this.reader_.readInt();
+    stats.cooldownRemaining = this.reader_.readInt();
+    stats.cooldownTotal = this.reader_.readInt();
+
+    stats.unknownVector = new Array(this.reader_.readInt());
+    for (let i = 0; i < stats.unknownVector.length; ++i) {
+      stats.unknownVector[i].name = this.reader_.readString();
+      stats.unknownVector[i].value = this.reader_.readInt();
+    }
+
+    stats.shatteredRealmSouls = this.reader_.readInt();
+    stats.shatteredRealmEssence = this.reader_.readInt();
+    stats.difficultySkip = this.reader_.readByte();
+
+    stats.unknown1 = this.reader_.readInt();
+    stats.unknown2 = this.reader_.readInt();
+
+    this.character_.playStats_ = new GDPlayStats(stats);
+  
+    this.reader_.readBlockEnd(block);
+  }
+
   /**
    * 
    * @returns {GDCharacter} returns the parsed character
@@ -461,6 +541,8 @@ class GDCharacterReader {
     this.readUiSettings_();
 
     this.readTutorials_();
+
+    this.readPlayStats_();
 
     return this.character_;
   }

@@ -1,3 +1,5 @@
+const { GDPlayStats } = require("./gd_play_stats");
+
 /**
  * GDCharacter represents character information fram a character (aka player)
  * save file.
@@ -203,6 +205,9 @@ class GDCharacter {
 
     /** Tutorial information. */
     this.tutorial_ = [];
+
+    /** Play statistics. */
+    this.playStats_ = new GDPlayStats();
   }
 }
 

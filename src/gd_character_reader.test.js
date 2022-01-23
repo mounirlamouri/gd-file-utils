@@ -4,6 +4,7 @@ const {GDSkill} = require('./gd_skill');
 const {GDUiSettings} = require('./gd_ui_settings');
 const fs = require('fs/promises');
 const { GDHotSlot } = require('./gd_hot_slot');
+const { GDPlayStats } = require('./gd_play_stats');
 
 test('Read freshly created man sc character', async () => {
   const buffer = await fs.readFile("test/data/freshly_created.gdc");
