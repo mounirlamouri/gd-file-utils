@@ -8,11 +8,67 @@ test('Constructor without values', () => {
   expected.unknown1_ = 0;
   expected.unknown2_ = 0;
   expected.unknown3_ = 0;
-  expected.unknown4_ = [];
-  expected.unknown5_ = [];
-  expected.unknown6_ = [];
-  expected.hotSlots_ = [];
-  expected.cameraDistance_ = 0;
+  expected.unknown4_ = ['', '', '', '', ''];
+  expected.unknown5_ = ['', '', '', '', ''];
+  expected.unknown6_ = [1, 0, 0, 0, 0];
+  expected.cameraDistance_ = 36;
+  expected.hotSlots_ = [
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot({type: GDHotSlot.Type.Health}),
+    new GDHotSlot({type: GDHotSlot.Type.Energy}),
+    new GDHotSlot({
+      type: GDHotSlot.Type.Regular,
+      skill: "records/skills/default/defaultweaponattack.dbr"
+    }),
+    new GDHotSlot({
+      type: GDHotSlot.Type.Regular,
+      skill: "records/skills/default/defaultweaponattack.dbr"
+    }),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot({type: GDHotSlot.Type.Health}),
+    new GDHotSlot({type: GDHotSlot.Type.Energy}),
+    new GDHotSlot({
+      type: GDHotSlot.Type.Regular,
+      skill: "records/skills/default/defaultweaponattack.dbr"
+    }),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+    new GDHotSlot(),
+  ];
 
   expect(settings).toStrictEqual(expected);
 });

@@ -1,4 +1,7 @@
-const { GDPlayStats } = require("./gd_play_stats");
+const {GDFactions} = require("./gd_factions");
+const {GDPlayStats} = require("./gd_play_stats");
+const {GDSkill} = require("./gd_skill");
+const {GDUiSettings} = require("./gd_ui_settings");
 
 /**
  * GDCharacter represents character information fram a character (aka player)
@@ -12,8 +15,7 @@ class GDCharacter {
     this.name_ = '';
 
     /** Sex of the character (either 'male' (1) or 'female' (0)) */
-    // TODO: use enums.
-    this.sex_ = 0;
+    this.sex_ = null;
 
     /** Name of the character's class */
     // NOTE: empty string means no class set.
@@ -22,27 +24,29 @@ class GDCharacter {
     this.classInfo_ = '';
 
     /** Level of the character. */
-    this.level_ = 0;
+    // TODO: what's this compared to bioLevel_
+    this.headerLevel_ = 1;
 
     /** Whether the character is a hardcore character. */
     this.hc_ = false;
 
     /** Version of the character save file. */
-    this.version_ = 0;
+    this.version_ = 8;  // 8 is currently the only version supported.
 
     /** UID of the character. */
-    this.uid_ = new Uint8Array(16);
+    // TODO: create UID type
+    this.uid_ = new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
     /** Whether the character is in the main quest. */
     // TODO: what does that really mean?
-    this.isInMainQuest_ = false;
+    this.isInMainQuest_ = true;
 
     /** Whether the character has been in game. */
     this.hasBeenInGame_ = false;
 
     /** Current difficulty level. */
     // TODO: figure out the values.
-    this.difficulty_ = 0;
+    this.difficulty_ = 64;
 
     /** Maximum difficulty level achieved. */
     // TODO: what does that really mean?
@@ -57,12 +61,12 @@ class GDCharacter {
     /** Current tribute value. */
     this.currentTribute_ = 0;
 
-    /** ??? */
-    this.compassState_ = 0;
+    /** TODO: what is it? */
+    this.compassState_ = 3;
 
     /** Whether the skill window should show help. */
     // TODO: probably boolean.
-    this.skillWindowShowHelp_ = 0;
+    this.skillWindowShowHelp_ = 1;
 
     /** Whether weapon swap is active. */
     this.weaponSwapActive_ = false;
@@ -70,12 +74,12 @@ class GDCharacter {
     /** Whether weapon swap is enabled. */
     this.weaponSwapEnabled_ = false;
 
-    /** Texture?? */
+    /** Texture. TODO: why is it empty for some characters? */
     this.texture_ = '';
 
     /** Unknown byte. */
     // TODO: what is it? so far, the read value is 39 on new characters.
-    this.unknown_ = 0;
+    this.unknown_ = 39;
 
     /**
      * Loot filter settings (booleans).
@@ -125,10 +129,13 @@ class GDCharacter {
      * < Quality Again >
      * 38: Always Show Double Rare
     */
-    this.lootFilter_ = new Array(39);
+    this.lootFilter_ = [ true, true, true, true, true, true, true, true, true,
+      true, true, true, true, true, true, true, true, true, false, false, false,
+      false, false, false, false, false, false, false, false, false, false,
+      false, false, false, false, false, false, false, false ];
 
     /** Character level. */
-    this.level_ = 0;
+    this.bioLevel_ = 1;
 
     /** Character cumulated experience points. */
     this.experience_ = 0;
@@ -146,41 +153,57 @@ class GDCharacter {
     this.totalDevotionUnlocked_ = 0;
 
     /** Character physique attribute points. */
-    this.physique_ = 0.0;
+    this.physique_ = 50.0;
 
     /** Character cunning attribute points. */
-    this.cunning_ = 0.0;
+    this.cunning_ = 50.0;
 
     /** Character spirit attribute points. */
-    this.spirit_ = 0.0;
+    this.spirit_ = 50.0;
 
     /** Character health points. */
-    this.health_ = 0.0;
+    this.health_ = 250.0;
 
     /** Character energy points. */
-    this.energy_ = 0.0;
+    this.energy_ = 250.0;
 
     /** Character's inventory. */
     this.inventory_ = {};
 
     /** Character's personal stash. */
-    this.stash_ = [];
+    this.stash_ = [{ width: 0, height: 0 }];
 
     /** Character's spawn locations per difficulty level. */
-    this.spawnDifficulty_ = new Array(3);
-    this.spawnLocation_ = new Array(3);
+    this.spawnDifficulty_ = [[], [], []];
+    this.spawnLocation_ = [
+      new Uint8Array([ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]),
+      new Uint8Array([ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]),
+      new Uint8Array([ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ])
+    ];
 
     /** Character's teleport list. */
-    this.teleports_ = new Array(3);
+    this.teleports_ = [[], [], []];
 
     /** Character's markers list. */
-    this.markers_ = new Array(3);
+    this.markers_ = [[], [], []];
 
     /** Character's shrines list. */
-    this.shrines_ = new Array(6);
+    this.shrines_ = [[], [], [], [], [], []];
 
     /** Character's skills. */
-    this.skills_ = [];
+    this.skills_ = [
+      new GDSkill({
+        name: "records/skills/default/defaultkickattack.dbr",
+        enabled: false,
+      }),
+      new GDSkill({
+        name: "records/skills/default/defaultwpbasicattack.dbr",
+        enabled: false,
+      }),
+      new GDSkill({name: "records/skills/default/defaultmoveto.dbr"}),
+      new GDSkill({name: "records/skills/default/defaultweaponattack.dbr"}),
+      new GDSkill({name: "records/skills/default/defaultpetattack.dbr"}),
+    ];
 
     /** Character's skills from items. */
     this.itemSkills_ = [];
@@ -198,10 +221,10 @@ class GDCharacter {
     this.loreNotes_ = [];
 
     /** Factions information. */
-    this.factions_ = {};
+    this.factions_ = new GDFactions();
 
     /** UI settings */
-    this.uiSettings_ = null;
+    this.uiSettings_ = new GDUiSettings();
 
     /** Tutorial information. */
     this.tutorial_ = [];
@@ -213,5 +236,15 @@ class GDCharacter {
     this.tokens_ = ['', '', ''];
   }
 }
+
+const Sex = {
+  Female: 0,
+  Male: 1,
+}
+
+Object.defineProperty(GDCharacter, 'Sex', {
+  value: Sex,
+  writable: false,
+});
 
 module.exports = {GDCharacter}

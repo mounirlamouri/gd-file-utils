@@ -1,4 +1,5 @@
 const {GDCharacter} = require('./gd_character');
+const {GDFactions} = require('./gd_factions');
 const {GDFileReader} = require('./gd_file_reader');
 const {GDHotSlot} = require('./gd_hot_slot');
 const {GDSkill} = require('./gd_skill');
@@ -19,7 +20,7 @@ class GDCharacterReader {
     this.character_.name_ = this.reader_.readWString();
     this.character_.sex_ = this.reader_.readByte();
     this.character_.classInfo_ = this.reader_.readString();
-    this.character_.level_ = this.reader_.readInt();
+    this.character_.headerLevel_ = this.reader_.readInt();
     this.character_.hc_ = this.reader_.readByte() ? true : false;
   }
 
@@ -68,7 +69,7 @@ class GDCharacterReader {
       throw new Error('Hardcoded int set to 8 not found!')
     }
 
-    this.character_.level_ = this.reader_.readInt();
+    this.character_.bioLevel_ = this.reader_.readInt();
     this.character_.experience_ = this.reader_.readInt();
     this.character_.attributePointsUnspent_ = this.reader_.readInt();
     this.character_.skillPointsUnspent_ = this.reader_.readInt();
@@ -315,14 +316,18 @@ class GDCharacterReader {
       throw new Error('Hardcoded int set to 5 not found!')
     }
 
+    let factions = {};
+
     // TODO: what is this int?
-    this.character_.factions_.faction = this.reader_.readInt();
+    factions.faction = this.reader_.readInt();
 
     const factionCount = this.reader_.readInt();
-    this.character_.factions_.info = new Array(factionCount);
+    factions.list = new Array(factionCount);
     for (let i = 0; i < factionCount; ++i) {
-      this.character_.factions_.info[i] = this.readFactionInfo_();
+      factions.list[i] = this.readFactionInfo_();
     }
+
+    this.character_.factions_ = new GDFactions(factions);
     
     this.reader_.readBlockEnd(block);
   }

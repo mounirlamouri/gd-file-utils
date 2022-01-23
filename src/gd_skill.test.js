@@ -1,21 +1,10 @@
 const {GDSkill} = require('./gd_skill');
 
-test('Read freshly created man sc character', async () => {
-  const skill = new GDSkill({
-    "active": 0,
-    "autoCastController": "",
-    "autoCastSkill": "",
-    "devotionLevel": 0,
-    "enabled": true,
-    "experience": 0,
-    "level": 1,
-    "name": "foo/bar.blah",
-    "unknown1": 0,
-    "unknown2": 0,
-  });
+test('Constructor with all fields', () => {
+  const skill = new GDSkill();
 
   const expected = new GDSkill();
-  expected.name_ = "foo/bar.blah";
+  expected.name_ = "records/skills/default/default";
   expected.level_ = 1;
   expected.enabled_ = true;
   expected.devotionLevel_ = 0;
@@ -25,6 +14,35 @@ test('Read freshly created man sc character', async () => {
   expected.unknown2_ = 0;
   expected.autoCastSkill_ = "";
   expected.autoCastController_ = "";
+
+  expect(skill).toStrictEqual(expected);
+});
+
+test('Constructor with all fields', () => {
+  const skill = new GDSkill({
+    "active": 1,
+    "autoCastController": "foo",
+    "autoCastSkill": "bar",
+    "devotionLevel": 2,
+    "enabled": true,
+    "experience": 2,
+    "level": 3,
+    "name": "foo/bar.blah",
+    "unknown1": 4,
+    "unknown2": 5,
+  });
+
+  const expected = new GDSkill();
+  expected.name_ = "foo/bar.blah";
+  expected.level_ = 3;
+  expected.enabled_ = true;
+  expected.devotionLevel_ = 2;
+  expected.experience_ = 2;
+  expected.active_ = 1;
+  expected.unknown1_ = 4;
+  expected.unknown2_ = 5;
+  expected.autoCastSkill_ = "bar";
+  expected.autoCastController_ = "foo";
 
   expect(skill).toStrictEqual(expected);
 });
