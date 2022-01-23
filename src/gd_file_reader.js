@@ -15,7 +15,7 @@
     this.buffer_ = buffer;
 
     /** Current position in the ArrayBuffer (in byte). */
-    this.read_offset_ = 0;
+    this.readOffset_ = 0;
 
     /**
      * Key used to decrypt the data. Using Uint32Array to guarantee a behaviour
@@ -53,7 +53,7 @@
     if (length < 0) {
       throw new Error("String length must be > 0")
     }
-    if ((this.read_offset_ + length) > this.buffer_.byteLength) {
+    if ((this.readOffset_ + length) > this.buffer_.byteLength) {
       throw new Error("String cannot be read before reaching end of file")
     }
 
@@ -78,8 +78,8 @@
   }
 
   readKey() {
-    const data = new Uint32Array(this.buffer_, this.read_offset_, 1);
-    this.read_offset_ += 4;
+    const data = new Uint32Array(this.buffer_, this.readOffset_, 1);
+    this.readOffset_ += 4;
 
     let key = new Uint32Array(1);
     key[0] = data[0];
@@ -98,8 +98,8 @@
   }
 
   readByte() {
-    const data = new Uint8Array(this.buffer_, this.read_offset_, 1);
-    this.read_offset_ += 1;
+    const data = new Uint8Array(this.buffer_, this.readOffset_, 1);
+    this.readOffset_ += 1;
 
     const value = data[0];
     let ret = new Uint8Array(1);
@@ -116,8 +116,8 @@
    * @returns parsed integer
    */
   readInt(keyUpdate = true) {
-    const data = new DataView(this.buffer_, this.read_offset_, 4);
-    this.read_offset_ += 4;
+    const data = new DataView(this.buffer_, this.readOffset_, 4);
+    this.readOffset_ += 4;
 
     const value = data.getUint32(0, true /* littleIndian */);
     let ret = new Uint32Array(1);
@@ -147,14 +147,14 @@
   readBlockStart() {
     const ret = this.readInt();
     const length = this.readInt(false /* keyUpdate */);
-    const end = this.read_offset_ + length;
+    const end = this.readOffset_ + length;
 
     return { 'ret': ret, 'length': length, 'end': end }
   }
 
   readBlockEnd(block) {
-    if (this.read_offset_ != block.end) {
-      console.log(this.read_offset_ + " " + block.end);
+    if (this.readOffset_ != block.end) {
+      console.log(this.readOffset_ + " " + block.end);
       throw new Error("Block didn't end at the expected position!");
     }
 

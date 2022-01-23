@@ -563,6 +563,10 @@ class GDCharacterReader {
 
     this.readTokens_();
 
+    if (this.reader_.readOffset_ != this.reader_.buffer_.byteLength) {
+      throw new Error('Should have reached end of file but did not!');
+    }
+
     return this.character_;
   }
 }
