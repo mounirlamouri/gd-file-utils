@@ -379,6 +379,25 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  readTutorials_() {
+    let block = this.reader_.readBlockStart();
+
+    if (block.ret != 15) {
+      throw new Error('first int of tutorial block is expected to be 15');
+    }
+    if (this.reader_.readInt() != 1) { // version
+      throw new Error('Hardcoded int set to 1 not found!')
+    }
+
+    const tutorialCount = this.reader_.readInt();
+    this.character_.tutorial_.length = tutorialCount;
+    for (let i = 0; i < tutorialCount; ++i) {
+      this.character_.tutorial_[i] = this.reader_.readInt();
+    }
+
+    this.reader_.readBlockEnd(block);
+  }
+
   /**
    * 
    * @returns {GDCharacter} returns the parsed character
@@ -440,6 +459,8 @@ class GDCharacterReader {
     this.readFactions_();
 
     this.readUiSettings_();
+
+    this.readTutorials_();
 
     return this.character_;
   }

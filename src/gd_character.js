@@ -200,6 +200,9 @@ class GDCharacter {
 
     /** UI settings */
     this.uiSettings_ = null;
+
+    /** Tutorial information. */
+    this.tutorial_ = [];
   }
 }
 
