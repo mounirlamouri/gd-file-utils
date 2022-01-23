@@ -478,6 +478,23 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  readTokens_() {
+    let block = this.reader_.readBlockStart();
+
+    if (block.ret != 10) {
+      throw new Error('first int of tokens block is expected to be 10');
+    }
+    if (this.reader_.readInt() != 2) { // version
+      throw new Error('Hardcoded int set to 2 not found!')
+    }
+
+    for (let i = 0; i < 3; ++i) {
+      this.character_.tokens_[i] = this.reader_.readString();
+    }
+
+    this.reader_.readBlockEnd(block);
+  }
+
   /**
    * 
    * @returns {GDCharacter} returns the parsed character
@@ -543,6 +560,8 @@ class GDCharacterReader {
     this.readTutorials_();
 
     this.readPlayStats_();
+
+    this.readTokens_();
 
     return this.character_;
   }

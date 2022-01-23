@@ -208,6 +208,9 @@ class GDCharacter {
 
     /** Play statistics. */
     this.playStats_ = new GDPlayStats();
+
+    /** Tokens. */
+    this.tokens_ = ['', '', ''];
   }
 }
 
