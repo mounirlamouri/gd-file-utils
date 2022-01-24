@@ -4,6 +4,7 @@ const {GDFactions} = require('./gd_factions');
 const {GDFileReader} = require('./gd_file_reader');
 const {GDHotSlot} = require('./gd_hot_slot');
 const {GDInventory} = require('./gd_inventory');
+const {GDInventoryItem} = require('./gd_inventory_item');
 const {GDItem} = require('./gd_item');
 const {GDSkill} = require('./gd_skill');
 const {GDPlayStats} = require('./gd_play_stats');
@@ -117,6 +118,16 @@ class GDCharacterReader {
     });
   }
 
+  readInventoryItem_() {
+    let item = this.readItem_();
+
+    item.position = {};
+    item.position.x = this.reader_.readInt();
+    item.position.y = this.reader_.readInt();
+
+    return new GDInventoryItem(item);
+  }
+
   readInventoryBag_() {
     let block = this.reader_.readBlockStart();
 
@@ -127,11 +138,10 @@ class GDCharacterReader {
     let bag = {};
 
     bag.unknown = this.reader_.readByte();
-    bag.itemsCount = this.reader_.readInt();
+    bag.items = new Array(this.reader_.readInt());
 
-    if (bag.itemsCount != 0) {
-      // TODO
-      throw new Error('Parsing items not supported yet');
+    for (let i = 0; i < bag.items.length; ++i) {
+      bag.items[i] = this.readInventoryItem_();
     }
 
     this.reader_.readBlockEnd(block);
@@ -580,7 +590,11 @@ class GDCharacterReader {
     }
 
     for (let i = 0; i < 3; ++i) {
-      this.character_.tokens_[i] = this.reader_.readString();
+      this.character_.tokens_[i].length = this.reader_.readInt();
+
+      for (let j = 0; j < this.character_.tokens_[i].length; ++j) {
+        this.character_.tokens_[i][j] = this.reader_.readString();
+      }
     }
 
     this.reader_.readBlockEnd(block);

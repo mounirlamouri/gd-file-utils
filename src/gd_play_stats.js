@@ -5,9 +5,18 @@
  */
 class GDPlayStats {
   constructor(init = null) {
+    /** Total play time (in seconds). */
     this.playTime_ = (init && init.playTime != null) ? init.playTime : 0;
+
+    /**
+     * Total number of deaths.
+     * For HC character, 1 means that the character can no longer be played.
+     */
     this.deaths_ = (init && init.deaths != null) ? init.deaths : 0;
+
+    /** Total number of kills. */
     this.kills_ = (init && init.kills != null) ? init.kills : 0;
+
     this.experienceFromKills_ = (init && init.experienceFromKills != null) ? init.experienceFromKills : 0;
     this.healthPotionsUsed_ = (init && init.healthPotionsUsed != null) ? init.healthPotionsUsed : 0;
     this.manaPotionsUsed_ = (init && init.manaPotionsUsed != null) ? init.manaPotionsUsed : 0;
@@ -40,7 +49,10 @@ class GDPlayStats {
     this.bossKills_ = (init && init.bossKills != null) ? init.bossKills : [0, 0, 0];
 
     // Crucible.
+
+    /** Greatest Crucible Tier this character survived. */
     this.survivalWaveTier_ = (init && init.survivalWaveTier != null) ? init.survivalWaveTier : 0;
+    /** Greatest Crucible Score this character received. */
     this.greatestSurvivalScore_ = (init && init.greatestSurvivalScore != null) ? init.greatestSurvivalScore : 0;
     this.cooldownRemaining_ = (init && init.cooldownRemaining != null) ? init.cooldownRemaining : 0;
     this.cooldownTotal_ = (init && init.cooldownTotal != null) ? init.cooldownTotal : 0;
