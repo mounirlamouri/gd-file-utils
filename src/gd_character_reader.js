@@ -1,7 +1,10 @@
 const {GDCharacter} = require('./gd_character');
+const {GDEquipmentSlot} = require('./gd_equipment_slot');
 const {GDFactions} = require('./gd_factions');
 const {GDFileReader} = require('./gd_file_reader');
 const {GDHotSlot} = require('./gd_hot_slot');
+const {GDInventory} = require('./gd_inventory');
+const {GDItem} = require('./gd_item');
 const {GDSkill} = require('./gd_skill');
 const {GDPlayStats} = require('./gd_play_stats');
 const {GDUiSettings} = require('./gd_ui_settings');
@@ -84,6 +87,58 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  readItem_() {
+    let item = {};
+
+    item.baseName = this.reader_.readString();
+    item.prefixName = this.reader_.readString();
+    item.suffixName = this.reader_.readString();
+    item.modifierName = this.reader_.readString();
+    item.transmuteName = this.reader_.readString();
+    item.seed = this.reader_.readInt();
+    item.componentName = this.reader_.readString();
+    item.relicBonus = this.reader_.readString();
+    item.componentSeed = this.reader_.readInt();
+    item.augmentName = this.reader_.readString();
+    item.unknown = this.reader_.readInt();
+    item.augmentSeed = this.reader_.readInt();
+    item.unknown1 = this.reader_.readInt();
+    item.stackCount = this.reader_.readInt();
+
+    return new GDItem(item);
+  }
+
+  readEquipmentSlot_() {
+    const item = this.readItem_();
+    const used = this.reader_.readByte() ? true : false;
+
+    return new GDEquipmentSlot({
+      item: used ? item : null,
+    });
+  }
+
+  readInventoryBag_() {
+    let block = this.reader_.readBlockStart();
+
+    if (block.ret != 0) {
+      throw new Error('firnt int expected to be zero');
+    }
+
+    let bag = {};
+
+    bag.unknown = this.reader_.readByte();
+    bag.itemsCount = this.reader_.readInt();
+
+    if (bag.itemsCount != 0) {
+      // TODO
+      throw new Error('Parsing items not supported yet');
+    }
+
+    this.reader_.readBlockEnd(block);
+
+    return bag;
+  }
+
   readInventory_() {
     let block = this.reader_.readBlockStart();
 
@@ -96,7 +151,38 @@ class GDCharacterReader {
 
     // Check if the inventory needs to be parsed.
     if (this.reader_.readByte()) {
-      // TODO
+      let inventory = {};
+
+      inventory.bags = new Array(this.reader_.readInt());
+      inventory.focused = this.reader_.readInt();
+      inventory.selected = this.reader_.readInt();
+
+      for (let i = 0; i < inventory.bags.length; ++i) {
+        inventory.bags[i] = this.readInventoryBag_();
+      }
+
+      inventory.useAlternate = this.reader_.readByte();
+
+      inventory.equipment = new Array(12);
+      for (let i = 0; i < inventory.equipment.length; ++i) {
+        inventory.equipment[i] = this.readEquipmentSlot_();
+      }
+
+      inventory.alternate1 = this.reader_.readByte();
+
+      inventory.weapons1 = new Array(2);
+      for (let i = 0; i < inventory.weapons1.length; ++i) {
+        inventory.weapons1[i] = this.readEquipmentSlot_();
+      }
+
+      inventory.alternate2 = this.reader_.readByte();
+
+      inventory.weapons2 = new Array(2);
+      for (let i = 0; i < inventory.weapons2.length; ++i) {
+        inventory.weapons2[i] = this.readEquipmentSlot_();
+      }
+
+      this.character_.inventory_ = new GDInventory(inventory);
     }
 
     this.reader_.readBlockEnd(block);

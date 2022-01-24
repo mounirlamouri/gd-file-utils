@@ -1,6 +1,6 @@
 const {GDSkill} = require('./gd_skill');
 
-test('Constructor with all fields', () => {
+test('Constructor with no fields', () => {
   const skill = new GDSkill();
 
   const expected = new GDSkill();
