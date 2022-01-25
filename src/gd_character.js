@@ -1,7 +1,7 @@
-const {GDFactions} = require("./gd_factions");
-const {GDPlayStats} = require("./gd_play_stats");
-const {GDSkill} = require("./gd_skill");
-const {GDUiSettings} = require("./gd_ui_settings");
+const {GDFactions} = require('./gd_factions');
+const {GDPlayStats} = require('./gd_play_stats');
+const {GDSkill} = require('./gd_skill');
+const {GDUiSettings} = require('./gd_ui_settings');
 
 /**
  * GDCharacter represents character information fram a character (aka player)
@@ -10,6 +10,9 @@ const {GDUiSettings} = require("./gd_ui_settings");
  * GDCharacterReader.
  */
 class GDCharacter {
+  /**
+   * @param {?Object} init optional initialisation object
+   */
   constructor() {
     /** Name of the character. */
     this.name_ = '';
@@ -20,7 +23,8 @@ class GDCharacter {
     /** Name of the character's class */
     // NOTE: empty string means no class set.
     // TODO: conversion from the code to the name in English?
-    // TODO: ... or maybe only save the code and offer an util for the translation?
+    // TODO: ... or maybe only save the code and offer an util for the
+    //       translation?
     this.classInfo_ = '';
 
     /** Level of the character. */
@@ -31,11 +35,12 @@ class GDCharacter {
     this.hc_ = false;
 
     /** Version of the character save file. */
-    this.version_ = 8;  // 8 is currently the only version supported.
+    this.version_ = 8; // 8 is currently the only version supported.
 
     /** UID of the character. */
     // TODO: create UID type
-    this.uid_ = new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    this.uid_ =
+      new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
     /** Whether the character is in the main quest. */
     // TODO: what does that really mean?
@@ -57,7 +62,7 @@ class GDCharacter {
 
     /** ??? */
     this.greatestSurvivalDifficulty_ = 0;
-  
+
     /** Current tribute value. */
     this.currentTribute_ = 0;
 
@@ -129,10 +134,10 @@ class GDCharacter {
      * < Quality Again >
      * 38: Always Show Double Rare
     */
-    this.lootFilter_ = [ true, true, true, true, true, true, true, true, true,
+    this.lootFilter_ = [true, true, true, true, true, true, true, true, true,
       true, true, true, true, true, true, true, true, true, false, false, false,
       false, false, false, false, false, false, false, false, false, false,
-      false, false, false, false, false, false, false, false ];
+      false, false, false, false, false, false, false, false];
 
     /** Character level. */
     this.bioLevel_ = 1;
@@ -171,14 +176,14 @@ class GDCharacter {
     this.inventory_ = null;
 
     /** Character's personal stash. */
-    this.stash_ = [{ width: 0, height: 0 }];
+    this.stash_ = [{width: 0, height: 0}];
 
     /** Character's spawn locations per difficulty level. */
     this.spawnDifficulty_ = [[], [], []];
     this.spawnLocation_ = [
-      new Uint8Array([ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]),
-      new Uint8Array([ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]),
-      new Uint8Array([ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ])
+      new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+      new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+      new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
     ];
 
     /** Character's teleport list. */
@@ -193,16 +198,16 @@ class GDCharacter {
     /** Character's skills. */
     this.skills_ = [
       new GDSkill({
-        name: "records/skills/default/defaultkickattack.dbr",
+        name: 'records/skills/default/defaultkickattack.dbr',
         enabled: false,
       }),
       new GDSkill({
-        name: "records/skills/default/defaultwpbasicattack.dbr",
+        name: 'records/skills/default/defaultwpbasicattack.dbr',
         enabled: false,
       }),
-      new GDSkill({name: "records/skills/default/defaultmoveto.dbr"}),
-      new GDSkill({name: "records/skills/default/defaultweaponattack.dbr"}),
-      new GDSkill({name: "records/skills/default/defaultpetattack.dbr"}),
+      new GDSkill({name: 'records/skills/default/defaultmoveto.dbr'}),
+      new GDSkill({name: 'records/skills/default/defaultweaponattack.dbr'}),
+      new GDSkill({name: 'records/skills/default/defaultpetattack.dbr'}),
     ];
 
     /** Character's skills from items. */
@@ -233,18 +238,18 @@ class GDCharacter {
     this.playStats_ = new GDPlayStats();
 
     /** Tokens associated to the character by difficulty level. */
-    this.tokens_ = [[], [], []]
+    this.tokens_ = [[], [], []];
   }
 }
 
 const Sex = {
   Female: 0,
   Male: 1,
-}
+};
 
 Object.defineProperty(GDCharacter, 'Sex', {
   value: Sex,
   writable: false,
 });
 
-module.exports = {GDCharacter}
+module.exports = {GDCharacter};

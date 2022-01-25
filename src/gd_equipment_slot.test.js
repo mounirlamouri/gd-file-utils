@@ -12,7 +12,7 @@ test('Constructor with no fields', () => {
 
 test('Constructor with item as object', () => {
   const slot = new GDEquipmentSlot({
-    item: { baseName: 'foobar' },
+    item: {baseName: 'foobar'},
   });
 
   const expected = new GDEquipmentSlot();
@@ -23,7 +23,7 @@ test('Constructor with item as object', () => {
 
 test('Constructor with item as GDItem', () => {
   const slot = new GDEquipmentSlot({
-    item: new GDItem({ baseName: 'barfoo' }),
+    item: new GDItem({baseName: 'barfoo'}),
   });
 
   const expected = new GDEquipmentSlot();

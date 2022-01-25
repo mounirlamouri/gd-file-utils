@@ -10,16 +10,24 @@ const {GDSkill} = require('./gd_skill');
 const {GDPlayStats} = require('./gd_play_stats');
 const {GDUiSettings} = require('./gd_ui_settings');
 
+/**
+ * GDCharacterReader is a class that will take an ArrayBuffer as an input and
+ * will output a GDCharacter representing the character. The application is
+ * responsible to take the GDC file and reads it into the ArrayBuffer.
+ */
 class GDCharacterReader {
   /**
-   * 
-   * @param {!ArrayBuffer} buffer 
+   *
+   * @param {!ArrayBuffer} buffer
    */
   constructor(buffer) {
     this.reader_ = new GDFileReader(buffer);
     this.character_ = new GDCharacter();
   }
 
+  /**
+   * Reads the character header (TODO?).
+   */
   readHeader_() {
     this.character_.name_ = this.reader_.readWString();
     this.character_.sex_ = this.reader_.readByte();
@@ -28,18 +36,24 @@ class GDCharacterReader {
     this.character_.hc_ = this.reader_.readByte() ? true : false;
   }
 
+  /**
+   * Reads the character UID.
+   */
   readUid_() {
     this.character_.uid_ = this.reader_.readUid();
   }
 
+  /**
+   * Reads the info block.
+   */
   readInfo_() {
-    let block = this.reader_.readBlockStart();
+    const block = this.reader_.readBlockStart();
 
     if (block.ret != 1) {
       throw new Error('first int of character info is expected to be 1');
     }
     if (this.reader_.readInt() != 5) { // version
-      throw new Error('Hardcoded int set to 5 not found!')
+      throw new Error('Hardcoded int set to 5 not found!');
     }
 
     this.character_.isInMainQuest_ = this.reader_.readByte() ? true : false;
@@ -63,14 +77,17 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  /**
+   * Reads the character stats (such as level, physique, etc.).
+   */
   readStats_() {
-    let block = this.reader_.readBlockStart();
+    const block = this.reader_.readBlockStart();
 
     if (block.ret != 2) {
       throw new Error('first int of stats block is expected to be 2');
     }
     if (this.reader_.readInt() != 8) { // version
-      throw new Error('Hardcoded int set to 8 not found!')
+      throw new Error('Hardcoded int set to 8 not found!');
     }
 
     this.character_.bioLevel_ = this.reader_.readInt();
@@ -88,8 +105,12 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  /**
+   * Reads a basid GDItem.
+   * @return {GDItem} the parsed item.
+   */
   readItem_() {
-    let item = {};
+    const item = {};
 
     item.baseName = this.reader_.readString();
     item.prefixName = this.reader_.readString();
@@ -109,6 +130,10 @@ class GDCharacterReader {
     return new GDItem(item);
   }
 
+  /**
+   * Reads an equipped item. This is similar to an item but an added boolean.
+   * @return {GDEquipmentItem} the parsed item.
+   */
   readEquipmentSlot_() {
     const item = this.readItem_();
     const used = this.reader_.readByte() ? true : false;
@@ -118,8 +143,12 @@ class GDCharacterReader {
     });
   }
 
+  /**
+   * Reads an inventory item. This is similar to an item with a position.
+   * @return {GDInventoryItem} the parsed item.
+   */
   readInventoryItem_() {
-    let item = this.readItem_();
+    const item = this.readItem_();
 
     item.position = {};
     item.position.x = this.reader_.readInt();
@@ -128,14 +157,18 @@ class GDCharacterReader {
     return new GDInventoryItem(item);
   }
 
+  /**
+   * Reads an inventory bag.
+   * @return {Object} the parsed inventory bag.
+   */
   readInventoryBag_() {
-    let block = this.reader_.readBlockStart();
+    const block = this.reader_.readBlockStart();
 
     if (block.ret != 0) {
       throw new Error('firnt int expected to be zero');
     }
 
-    let bag = {};
+    const bag = {};
 
     bag.unknown = this.reader_.readByte();
     bag.items = new Array(this.reader_.readInt());
@@ -149,19 +182,22 @@ class GDCharacterReader {
     return bag;
   }
 
+  /**
+   * Reads the character's inventory.
+   */
   readInventory_() {
-    let block = this.reader_.readBlockStart();
+    const block = this.reader_.readBlockStart();
 
     if (block.ret != 3) {
       throw new Error('first int of inventory block is expected to be 3');
     }
     if (this.reader_.readInt() != 4) { // version
-      throw new Error('Hardcoded int set to 4 not found!')
+      throw new Error('Hardcoded int set to 4 not found!');
     }
 
     // Check if the inventory needs to be parsed.
     if (this.reader_.readByte()) {
-      let inventory = {};
+      const inventory = {};
 
       inventory.bags = new Array(this.reader_.readInt());
       inventory.focused = this.reader_.readInt();
@@ -198,14 +234,18 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  /**
+   * Reads a stash tab block.
+   * @return {Object} the parsed stash tab.
+   */
   readStashTab_() {
-    let block = this.reader_.readBlockStart();
+    const block = this.reader_.readBlockStart();
 
     if (block.ret != 0) {
       throw new Error('first int of stash tab block is expected to be 0');
     }
 
-    let stash = {};
+    const stash = {};
     stash.width = this.reader_.readInt();
     stash.height = this.reader_.readInt();
 
@@ -219,14 +259,17 @@ class GDCharacterReader {
     return stash;
   }
 
+  /**
+   * Reads a character's stash.
+   */
   readStash_() {
-    let block = this.reader_.readBlockStart();
+    const block = this.reader_.readBlockStart();
 
     if (block.ret != 4) {
       throw new Error('first int of stash block is expected to be 4');
     }
     if (this.reader_.readInt() != 6) { // version
-      throw new Error('Hardcoded int set to 6 not found!')
+      throw new Error('Hardcoded int set to 6 not found!');
     }
 
     const stashCount = this.reader_.readInt();
@@ -237,14 +280,17 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  /**
+   * Reads a spawn location block.
+   */
   readSpawnLocations_() {
-    let block = this.reader_.readBlockStart();
+    const block = this.reader_.readBlockStart();
 
     if (block.ret != 5) {
       throw new Error('first int of spawn block is expected to be 5');
     }
     if (this.reader_.readInt() != 1) { // version
-      throw new Error('Hardcoded int set to 1 not found!')
+      throw new Error('Hardcoded int set to 1 not found!');
     }
 
     for (let i = 0; i < this.character_.spawnDifficulty_.length; ++i) {
@@ -262,14 +308,17 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  /**
+   * Reads a teleports block.
+   */
   readTeleports_() {
-    let block = this.reader_.readBlockStart();
+    const block = this.reader_.readBlockStart();
 
     if (block.ret != 6) {
       throw new Error('first int of telports block is expected to be 6');
     }
     if (this.reader_.readInt() != 1) { // version
-      throw new Error('Hardcoded int set to 1 not found!')
+      throw new Error('Hardcoded int set to 1 not found!');
     }
 
     for (let i = 0; i < this.character_.teleports_.length; ++i) {
@@ -283,14 +332,17 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  /**
+   * Reads a markers block.
+   */
   readMarkers_() {
-    let block = this.reader_.readBlockStart();
+    const block = this.reader_.readBlockStart();
 
     if (block.ret != 7) {
       throw new Error('first int of markers block is expected to be 7');
     }
     if (this.reader_.readInt() != 1) { // version
-      throw new Error('Hardcoded int set to 1 not found!')
+      throw new Error('Hardcoded int set to 1 not found!');
     }
 
     for (let i = 0; i < this.character_.markers_.length; ++i) {
@@ -300,18 +352,21 @@ class GDCharacterReader {
         this.character_.markers_[i][j] = this.reader_.readUid();
       }
     }
-  
+
     this.reader_.readBlockEnd(block);
   }
 
+  /**
+   * Reads a shrines block.
+   */
   readShrines_() {
-    let block = this.reader_.readBlockStart();
+    const block = this.reader_.readBlockStart();
 
     if (block.ret != 17) {
       throw new Error('first int of shrines block is expected to be 17');
     }
     if (this.reader_.readInt() != 2) { // version
-      throw new Error('Hardcoded int set to 1 not found!')
+      throw new Error('Hardcoded int set to 1 not found!');
     }
 
     for (let i = 0; i < this.character_.shrines_.length; ++i) {
@@ -321,13 +376,17 @@ class GDCharacterReader {
         this.character_.shrines_[i][j] = this.reader_.readUid();
       }
     }
-  
+
     this.reader_.readBlockEnd(block);
   }
 
+  /**
+   * Reads a character skill.
+   * @return {GDSkill} the parsed skill.
+   */
   readCharacterSkill_() {
-    let skill = {};
-    
+    const skill = {};
+
     skill.name = this.reader_.readString();
     skill.level = this.reader_.readInt();
     skill.enabled = this.reader_.readByte() ? true : false;
@@ -342,14 +401,17 @@ class GDCharacterReader {
     return new GDSkill(skill);
   }
 
+  /**
+   * Reads the character's skills.
+   */
   readSkills_() {
-    let block = this.reader_.readBlockStart();
+    const block = this.reader_.readBlockStart();
 
     if (block.ret != 8) {
       throw new Error('first int of skills block is expected to be 8');
     }
     if (this.reader_.readInt() != 5) { // version
-      throw new Error('Hardcoded int set to 1 not found!')
+      throw new Error('Hardcoded int set to 1 not found!');
     }
 
     const skillCount = this.reader_.readInt();
@@ -371,14 +433,17 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  /**
+   * Reads the lore notes collected by the character.
+   */
   readLoreNotes_() {
-    let block = this.reader_.readBlockStart();
+    const block = this.reader_.readBlockStart();
 
     if (block.ret != 12) {
       throw new Error('first int of lore block is expected to be 12');
     }
     if (this.reader_.readInt() != 1) { // version
-      throw new Error('Hardcoded int set to 1 not found!')
+      throw new Error('Hardcoded int set to 1 not found!');
     }
 
     const loreNotesCount = this.reader_.readInt();
@@ -386,12 +451,16 @@ class GDCharacterReader {
     for (let i = 0; i < loreNotesCount; ++i) {
       // TODO
     }
-    
+
     this.reader_.readBlockEnd(block);
   }
 
+  /**
+   * Reads the information associated to a specific faction.
+   * @return {Object} the parsed faction information.
+   */
   readFactionInfo_() {
-    let faction = {};
+    const faction = {};
 
     faction.modified = this.reader_.readByte();
     faction.unlocked = this.reader_.readByte(); // TODO: boolean?
@@ -402,17 +471,20 @@ class GDCharacterReader {
     return faction;
   }
 
+  /**
+   * Reads the factions information associated with a character.
+   */
   readFactions_() {
-    let block = this.reader_.readBlockStart();
+    const block = this.reader_.readBlockStart();
 
     if (block.ret != 13) {
       throw new Error('first int of factions block is expected to be 13');
     }
     if (this.reader_.readInt() != 5) { // version
-      throw new Error('Hardcoded int set to 5 not found!')
+      throw new Error('Hardcoded int set to 5 not found!');
     }
 
-    let factions = {};
+    const factions = {};
 
     // TODO: what is this int?
     factions.faction = this.reader_.readInt();
@@ -424,12 +496,16 @@ class GDCharacterReader {
     }
 
     this.character_.factions_ = new GDFactions(factions);
-    
+
     this.reader_.readBlockEnd(block);
   }
 
+  /**
+   * Reads a hot slot information.
+   * @return {GDHotSlot} the parsed hot slot.
+   */
   readHotSlot_() {
-    let slot = {};
+    const slot = {};
 
     slot.type = this.reader_.readInt();
 
@@ -445,17 +521,20 @@ class GDCharacterReader {
     return new GDHotSlot(slot);
   }
 
+  /**
+   * Reads the UI Settings for the character.
+   */
   readUiSettings_() {
-    let block = this.reader_.readBlockStart();
+    const block = this.reader_.readBlockStart();
 
     if (block.ret != 14) {
       throw new Error('first int of ui settings block is expected to be 14');
     }
     if (this.reader_.readInt() != 5) { // version
-      throw new Error('Hardcoded int set to 5 not found!')
+      throw new Error('Hardcoded int set to 5 not found!');
     }
 
-    let settings = {};
+    const settings = {};
     settings.unknown1 = this.reader_.readByte();
     settings.unknown2 = this.reader_.readInt();
     settings.unknown3 = this.reader_.readByte();
@@ -481,14 +560,17 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  /**
+   * Reads the tutorial information seen by the character.
+   */
   readTutorials_() {
-    let block = this.reader_.readBlockStart();
+    const block = this.reader_.readBlockStart();
 
     if (block.ret != 15) {
       throw new Error('first int of tutorial block is expected to be 15');
     }
     if (this.reader_.readInt() != 1) { // version
-      throw new Error('Hardcoded int set to 1 not found!')
+      throw new Error('Hardcoded int set to 1 not found!');
     }
 
     const tutorialCount = this.reader_.readInt();
@@ -500,17 +582,20 @@ class GDCharacterReader {
     this.reader_.readBlockEnd(block);
   }
 
+  /**
+   * Reads the play statistics of the character.
+   */
   readPlayStats_() {
-    let block = this.reader_.readBlockStart();
+    const block = this.reader_.readBlockStart();
 
     if (block.ret != 16) {
       throw new Error('first int of stats block is expected to be 16');
     }
     if (this.reader_.readInt() != 11) { // version
-      throw new Error('Hardcoded int set to 11 not found!')
+      throw new Error('Hardcoded int set to 11 not found!');
     }
 
-    let stats = {};
+    const stats = {};
 
     stats.playTime = this.reader_.readInt();
     stats.deaths = this.reader_.readInt();
@@ -549,7 +634,7 @@ class GDCharacterReader {
     stats.mythicalRelicsCrafted = this.reader_.readInt();
     stats.shrinesRestored = this.reader_.readInt();
     stats.oneShotChestsOpened = this.reader_.readInt();
-    stats.loreNotesCollected = this.reader_.readInt();  
+    stats.loreNotesCollected = this.reader_.readInt();
 
     stats.bossKills = new Array(3);
     for (let i = 0; i < 3; ++i) {
@@ -575,18 +660,21 @@ class GDCharacterReader {
     stats.unknown2 = this.reader_.readInt();
 
     this.character_.playStats_ = new GDPlayStats(stats);
-  
+
     this.reader_.readBlockEnd(block);
   }
 
+  /**
+   * Reads tokens associated with the character.
+   */
   readTokens_() {
-    let block = this.reader_.readBlockStart();
+    const block = this.reader_.readBlockStart();
 
     if (block.ret != 10) {
       throw new Error('first int of tokens block is expected to be 10');
     }
     if (this.reader_.readInt() != 2) { // version
-      throw new Error('Hardcoded int set to 2 not found!')
+      throw new Error('Hardcoded int set to 2 not found!');
     }
 
     for (let i = 0; i < 3; ++i) {
@@ -601,18 +689,18 @@ class GDCharacterReader {
   }
 
   /**
-   * 
-   * @returns {GDCharacter} returns the parsed character
+   *
+   * @return {GDCharacter} returns the parsed character
    */
   read() {
     this.reader_.readKey();
 
     if (this.reader_.readInt() != 0x58434447) {
-      throw new Error('Hardcoded int set to 0x58434447 not found!')
+      throw new Error('Hardcoded int set to 0x58434447 not found!');
     }
 
     if (this.reader_.readInt() != 2) {
-      throw new Error('Hardcoded int set to 2 not found!')
+      throw new Error('Hardcoded int set to 2 not found!');
     }
 
     this.readHeader_();
@@ -621,19 +709,19 @@ class GDCharacterReader {
     // been used but set to 1 for characters that were not played yet.
     // TODO: verify.
     {
-      let byte = this.reader_.readByte();
+      const byte = this.reader_.readByte();
       if (byte != 1 && byte != 3) {
         throw new Error('Hardcoded byte set to 1 or 3 not found!');
       }
     }
 
     if (this.reader_.readInt(false /* keyUpdate */) != 0) {
-      throw new Error('Hardcoded byte set to 0 not found!')
+      throw new Error('Hardcoded byte set to 0 not found!');
     }
 
     this.character_.version_ = this.reader_.readInt();
     if (this.character_.version_ != 8) {
-      throw new Error('Only v8 character files are supported.')
+      throw new Error('Only v8 character files are supported.');
     }
 
     this.readUid_();
@@ -676,4 +764,4 @@ class GDCharacterReader {
   }
 }
 
-module.exports = {GDCharacterReader}
+module.exports = {GDCharacterReader};

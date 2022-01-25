@@ -2,6 +2,9 @@
  * GDFactions represents the faction information from a character file.
  */
 class GDFactions {
+  /**
+   * @param {?Object} init optional initialisation object
+   */
   constructor(init = null) {
     /** First int in the faction block. Not clear what is represents. */
     this.faction_ = (init && init.faction != null) ? init.faction : 0;
@@ -203,4 +206,4 @@ class GDFactions {
   }
 }
 
-module.exports = {GDFactions}
+module.exports = {GDFactions};

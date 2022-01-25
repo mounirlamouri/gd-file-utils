@@ -4,7 +4,7 @@ test('Checks key_ and table_ values after reading the first 4 bytes', () => {
   const data = new Uint8Array([40, 9, 75, 111]);
 
   const expectedKey = 0x3a1e5c7d;
-  const expectedTable = [ 0xdd58443e, 0xb937ad1f, 0xf64918f, 0x49119bc7,
+  const expectedTable = [0xdd58443e, 0xb937ad1f, 0xf64918f, 0x49119bc7,
     0xa66f6ce3, 0x67fffb71, 0x468815b8, 0x8d8416dc, 0x6260116e, 0xdd3e0bb7,
     0xe814fcdb, 0x91b66f6d, 0x4c6325b6, 0x923889db, 0x1290b5ed, 0xdbf488f6,
     0xde335b7b, 0x58f72ebd, 0xe6844d5e, 0xe6bd81af, 0x78a763d7, 0xd9f6f8eb,
@@ -46,9 +46,9 @@ test('Checks key_ and table_ values after reading the first 4 bytes', () => {
     0xeb7e3445, 0xcdc5e422, 0xdf2f5711, 0x6f31d388, 0xde09fdc4, 0x2f8f88e2,
     0xcbb60971, 0x16f61cb8, 0x4c849a5c, 0x3105132e, 0x1e02ec97, 0x16209d4b,
     0xf808d7a5, 0xd76ea5d2, 0xb1cd6fe9, 0x6171bbf4, 0x6aa85ffa, 0x4620f0fd,
-    0xa0b0ce7e, 0x2daf923f, 0xbd16541f, 0x56ad650f, 0x7b22c587, 0x9c8e61c3 ];
+    0xa0b0ce7e, 0x2daf923f, 0xbd16541f, 0x56ad650f, 0x7b22c587, 0x9c8e61c3];
 
-  let reader = new GDFileReader(data.buffer);
+  const reader = new GDFileReader(data.buffer);
   reader.readKey();
 
   expect(reader.key_[0]).toEqual(expectedKey);
@@ -61,14 +61,14 @@ test('Checks key_ and table_ values after reading the first 4 bytes', () => {
 test('Basic readByte() check', () => {
   const data = new Uint8Array([40, 9, 75, 111, 4]);
 
-  let reader = new GDFileReader(data.buffer);
+  const reader = new GDFileReader(data.buffer);
   reader.readKey();
 
   expect(reader.readByte()).toBe(121);
 });
 
 test('updateTable_() behaviour with one byte', () => {
-  let reader = new GDFileReader(null);
+  const reader = new GDFileReader(null);
   reader.key_[0] = 42;
   for (let i = 0; i < reader.table_.length; ++i) {
     reader.table_[i] = i;
@@ -82,14 +82,14 @@ test('updateTable_() behaviour with one byte', () => {
 test('Basic readInt() check', () => {
   const data = new Uint8Array([40, 9, 75, 111, 1, 2, 3, 4]);
 
-  let reader = new GDFileReader(data.buffer);
+  const reader = new GDFileReader(data.buffer);
   reader.readKey();
 
   expect(reader.readInt()).toBe(0x3e1d5e7c);
 });
 
 test('updateTable_() behaviour with 4 bytes', () => {
-  let reader = new GDFileReader(null);
+  const reader = new GDFileReader(null);
   reader.key_[0] = 42;
   for (let i = 0; i < reader.table_.length; ++i) {
     reader.table_[i] = i;
@@ -103,7 +103,7 @@ test('updateTable_() behaviour with 4 bytes', () => {
 test('readByte() after readInt()', () => {
   const data = new Uint8Array([40, 9, 75, 111, 1, 2, 3, 4, 0]);
 
-  let reader = new GDFileReader(data.buffer);
+  const reader = new GDFileReader(data.buffer);
   reader.readKey();
 
   expect(reader.readInt()).toBe(0x3e1d5e7c);
@@ -113,55 +113,56 @@ test('readByte() after readInt()', () => {
 test('Basic readString() check', () => {
   const data = new Uint8Array([40, 9, 75, 111, 3, 0, 0, 0, 42, 0, 42]);
 
-  let reader = new GDFileReader(data.buffer);
+  const reader = new GDFileReader(data.buffer);
   reader.readKey();
 
   // Force key to 0 to force the string length.
   reader.key_[0] = 0;
 
-  expect(reader.readString()).toBe("Ó¸¬");
+  expect(reader.readString()).toBe('Ó¸¬');
 });
 
 test('Basic readWString() check', () => {
-  const data = new Uint8Array([40, 9, 75, 111, 3, 0, 0, 0, 42, 0, 42, 0, 42, 0]);
+  const data =
+    new Uint8Array([40, 9, 75, 111, 3, 0, 0, 0, 42, 0, 42, 0, 42, 0]);
 
-  let reader = new GDFileReader(data.buffer);
+  const reader = new GDFileReader(data.buffer);
   reader.readKey();
 
   // Force key to 0 to force the string length.
   reader.key_[0] = 0;
 
-  expect(reader.readWString()).toBe("Ó¬Ó");
+  expect(reader.readWString()).toBe('Ó¬Ó');
 });
 
 test('readString() of length 0', () => {
   const data = new Uint8Array([40, 9, 75, 111, 0, 0, 0, 0]);
 
-  let reader = new GDFileReader(data.buffer);
+  const reader = new GDFileReader(data.buffer);
   reader.readKey();
 
   // Force key to 0 to force the string length.
   reader.key_[0] = 0;
 
-  expect(reader.readString()).toBe("");
+  expect(reader.readString()).toBe('');
 });
 
 test('readWString() of length 0', () => {
   const data = new Uint8Array([40, 9, 75, 111, 0, 0, 0, 0]);
 
-  let reader = new GDFileReader(data.buffer);
+  const reader = new GDFileReader(data.buffer);
   reader.readKey();
 
   // Force key to 0 to force the string length.
   reader.key_[0] = 0;
 
-  expect(reader.readWString()).toBe("");
+  expect(reader.readWString()).toBe('');
 });
 
 test('Basic readInt() check without key update', () => {
-  const data = new Uint8Array([40, 9, 75, 111, 1, 2, 3, 4, 1, 2 , 3, 4]);
+  const data = new Uint8Array([40, 9, 75, 111, 1, 2, 3, 4, 1, 2, 3, 4]);
 
-  let reader = new GDFileReader(data.buffer);
+  const reader = new GDFileReader(data.buffer);
   reader.readKey();
 
   // If the key isn't updated, reading the same 4-bytes twice [1, 2, 3, 4] will
@@ -171,18 +172,22 @@ test('Basic readInt() check without key update', () => {
 });
 
 test('Basic readBlockStart() check', () => {
-  const data = new Uint8Array([40, 9, 75, 111, 1, 2, 3, 4, 1, 2 , 3, 4]);
+  const data = new Uint8Array([40, 9, 75, 111, 1, 2, 3, 4, 1, 2, 3, 4]);
 
-  let reader = new GDFileReader(data.buffer);
+  const reader = new GDFileReader(data.buffer);
   reader.readKey();
 
-  expect(reader.readBlockStart()).toEqual({ret: 1042112124, length: 1731237320, end: 1731237332});
+  expect(reader.readBlockStart()).toEqual({
+    ret: 1042112124,
+    length: 1731237320,
+    end: 1731237332,
+  });
 });
 
 test('Basic readFloat() check', () => {
   const data = new Uint8Array([40, 9, 75, 111, 1, 2, 3, 4]);
 
-  let reader = new GDFileReader(data.buffer);
+  const reader = new GDFileReader(data.buffer);
   reader.readKey();
 
   expect(reader.readFloat()).toBe(0.1536807417869568);
@@ -192,11 +197,11 @@ test('Basic readUid() check', () => {
   const data = new Uint8Array([40, 9, 75, 111, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
     11, 12, 13, 14, 15, 16]);
 
-  let reader = new GDFileReader(data.buffer);
+  const reader = new GDFileReader(data.buffer);
   reader.readKey();
 
-  const expectedUid = [124,  96, 238,  46, 204, 190,  7, 212, 187,  15, 213,
-    191, 8, 208,  60, 213];
+  const expectedUid = [124, 96, 238, 46, 204, 190, 7, 212, 187, 15, 213,
+    191, 8, 208, 60, 213];
   const uid = reader.readUid();
   for (let i = 0; i < uid.length; ++i) {
     expect(uid[i]).toEqual(expectedUid[i]);

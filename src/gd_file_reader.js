@@ -6,9 +6,9 @@
  * This class will read sequentially and will not allow the caller to seek at
  * an arbitrary position in the file.
  */
- class GDFileReader {
+class GDFileReader {
   /**
-   * @param {!ArrayBuffer} buffer 
+   * @param {!ArrayBuffer} buffer
    */
   constructor(buffer) {
     /** ArrayBuffer of the file to read. */
@@ -33,7 +33,7 @@
   /**
    * Update the key_ based on the recently read |bytes|. Involves updating the
    * table_.
-   * @param {!Array} bytes 
+   * @param {!Array} bytes
    */
   updateKey_(bytes) {
     for (let i = 0; i < bytes.length; ++i) {
@@ -44,27 +44,27 @@
   /**
    * Parses a string, either using wide character or not depending on
    * parameters.
-   * @param {boolean} wide 
-   * @returns {string} Parsed string.
+   * @param {boolean} wide
+   * @return {string} Parsed string.
    */
   readStringInternal_(wide) {
     const length = this.readInt();
 
     if (length < 0) {
-      throw new Error("String length must be > 0")
+      throw new Error('String length must be > 0');
     }
     if ((this.readOffset_ + length) > this.buffer_.byteLength) {
-      throw new Error("String cannot be read before reaching end of file")
+      throw new Error('String cannot be read before reaching end of file');
     }
 
     if (length == 0) {
-      return "";
+      return '';
     }
-    
-    let bytes = new Uint8Array(length);
+
+    const bytes = new Uint8Array(length);
     for (let i = 0; i < length; ++i) {
       if (wide) {
-        let c = new Uint8Array(2);
+        const c = new Uint8Array(2);
         c[0] = this.readByte();
         c[1] = this.readByte() << 8;
 
@@ -77,14 +77,17 @@
     return String.fromCharCode(...bytes);
   }
 
+  /**
+   * Reads the key at the beginning of the file and setup the table.
+   */
   readKey() {
     const data = new Uint32Array(this.buffer_, this.readOffset_, 1);
     this.readOffset_ += 4;
 
-    let key = new Uint32Array(1);
+    const key = new Uint32Array(1);
     key[0] = data[0];
 
-    key[0] ^= 0x55555555;  // 1431655765
+    key[0] ^= 0x55555555; // 1431655765
 
     this.key_[0] = key[0];
 
@@ -97,12 +100,16 @@
     }
   }
 
+  /**
+   * Reads 1 byte as a uint8.
+   * @return {Uint8} the parsed uint8.
+   */
   readByte() {
     const data = new Uint8Array(this.buffer_, this.readOffset_, 1);
     this.readOffset_ += 1;
 
     const value = data[0];
-    let ret = new Uint8Array(1);
+    const ret = new Uint8Array(1);
     ret[0] = value ^ this.key_[0];
 
     this.updateKey_([data[0]]);
@@ -111,65 +118,89 @@
   }
 
   /**
-   * 
+   * Reads 4 bytes as a uint32.
    * @param {boolean=} keyUpdate Whether updateKey_ should be called (optional)
-   * @returns parsed integer
+   * @return {Uint32} parsed uint32.
    */
   readInt(keyUpdate = true) {
     const data = new DataView(this.buffer_, this.readOffset_, 4);
     this.readOffset_ += 4;
 
     const value = data.getUint32(0, true /* littleIndian */);
-    let ret = new Uint32Array(1);
+    const ret = new Uint32Array(1);
     ret[0] = value ^ this.key_[0];
 
     if (keyUpdate) {
-      this.updateKey_([data.getUint8(0), data.getUint8(1), data.getUint8(2), data.getUint8(3)]);
+      this.updateKey_([
+        data.getUint8(0), data.getUint8(1), data.getUint8(2), data.getUint8(3),
+      ]);
     }
 
     return ret[0];
   }
 
+  /**
+   * Reads 4 bytes as a float.
+   * @return {Float32} parsed float.
+   */
   readFloat() {
     const data = new DataView(new ArrayBuffer(4));
     data.setInt32(0, this.readInt(), true /* littleIndian */);
     return data.getFloat32(0, true /* little Indian */);
   }
 
+  /**
+   * Reads a series of bytes as a string with the first one being the length
+   * and the {length} following ones read as one-byte characters (char).
+   * @return {string} parsed wide string.
+   */
   readWString() {
     return this.readStringInternal_(true /* wide */);
   }
 
+  /**
+   * Reads a series of bytes as a string with the first one being the length
+   * and the {length}*2 following ones read as two-byte characters (wchar).
+   * @return {string} parsed string.
+   */
   readString() {
     return this.readStringInternal_(false /* wide */);
   }
 
+  /**
+   * Reads the beginning of a file block. It contains a key and length.
+   * @return {Object} an object with the block information.
+   */
   readBlockStart() {
     const ret = this.readInt();
     const length = this.readInt(false /* keyUpdate */);
     const end = this.readOffset_ + length;
 
-    return { 'ret': ret, 'length': length, 'end': end }
+    return {'ret': ret, 'length': length, 'end': end};
   }
 
+  /**
+   * Reads the end of a block and checks that the block ends is expected.
+   * @param {*} block returned from readBlockStart()
+   */
   readBlockEnd(block) {
     if (this.readOffset_ != block.end) {
-      console.log(this.readOffset_ + " " + block.end);
-      throw new Error("Block didn't end at the expected position!");
+      console.log(this.readOffset_ + ' ' + block.end);
+      throw new Error('Block didn\'t end at the expected position!');
     }
 
     if (this.readInt(false /* keyUpdate */) != 0) {
-      throw new Error("Hardcoded byte set to 0 wasn't found at the end of the block!")
+      throw new Error('Hardcoded byte set to 0 not found at the end of block!');
     }
   }
 
   /**
    * Reads a uid type (16 bytes)
-   * @returns Uint8Array[16]
+   * @return {Uint8Array} parsed uid
    */
   readUid() {
-    let ret = new Uint8Array(16);
-    
+    const ret = new Uint8Array(16);
+
     for (let i = 0; i < ret.length; ++i) {
       ret[i] = this.readByte();
     }
@@ -178,4 +209,4 @@
   }
 }
 
-module.exports = {GDFileReader}
+module.exports = {GDFileReader};

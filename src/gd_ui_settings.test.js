@@ -1,4 +1,4 @@
-const { GDHotSlot } = require('./gd_hot_slot');
+const {GDHotSlot} = require('./gd_hot_slot');
 const {GDUiSettings} = require('./gd_ui_settings');
 
 test('Constructor without values', () => {
@@ -25,11 +25,11 @@ test('Constructor without values', () => {
     new GDHotSlot({type: GDHotSlot.Type.Energy}),
     new GDHotSlot({
       type: GDHotSlot.Type.Regular,
-      skill: "records/skills/default/defaultweaponattack.dbr"
+      skill: 'records/skills/default/defaultweaponattack.dbr',
     }),
     new GDHotSlot({
       type: GDHotSlot.Type.Regular,
-      skill: "records/skills/default/defaultweaponattack.dbr"
+      skill: 'records/skills/default/defaultweaponattack.dbr',
     }),
     new GDHotSlot(),
     new GDHotSlot(),
@@ -47,7 +47,7 @@ test('Constructor without values', () => {
     new GDHotSlot({type: GDHotSlot.Type.Energy}),
     new GDHotSlot({
       type: GDHotSlot.Type.Regular,
-      skill: "records/skills/default/defaultweaponattack.dbr"
+      skill: 'records/skills/default/defaultweaponattack.dbr',
     }),
     new GDHotSlot(),
     new GDHotSlot(),
@@ -81,7 +81,7 @@ test('Constructor with all fields', () => {
     unknown4: [1, 0, 0, 0, 0],
     unknown5: [0, 1, 0, 0, 0],
     unknown6: [0, 0, 1, 0, 0],
-    hotSlots: [ new GDHotSlot() ],
+    hotSlots: [new GDHotSlot()],
     cameraDistance: 42,
   });
 
@@ -92,7 +92,7 @@ test('Constructor with all fields', () => {
   expected.unknown4_ = [1, 0, 0, 0, 0];
   expected.unknown5_ = [0, 1, 0, 0, 0];
   expected.unknown6_ = [0, 0, 1, 0, 0];
-  expected.hotSlots_ = [ new GDHotSlot() ];
+  expected.hotSlots_ = [new GDHotSlot()];
   expected.cameraDistance_ = 42;
 
   expect(settings).toStrictEqual(expected);

@@ -6,10 +6,10 @@ const {GDInventoryItem} = require('./gd_inventory_item');
 const fs = require('fs/promises');
 
 test('Read freshly created man sc character', async () => {
-  const buffer = await fs.readFile("test/data/freshly_created.gdc");
+  const buffer = await fs.readFile('test/data/freshly_created.gdc');
   const reader = new GDCharacterReader(buffer.buffer);
 
-  let character = new GDCharacter();
+  const character = new GDCharacter();
   character.name_ = 'FooBar';
   character.sex_ = GDCharacter.Sex.Male;
   character.texture_ = 'creatures/pc/hero02.tex';
@@ -18,10 +18,10 @@ test('Read freshly created man sc character', async () => {
 });
 
 test('Read freshly created woman hc character', async () => {
-  const buffer = await fs.readFile("test/data/woman_hc.gdc");
+  const buffer = await fs.readFile('test/data/woman_hc.gdc');
   const reader = new GDCharacterReader(buffer.buffer);
 
-  let character = new GDCharacter();
+  const character = new GDCharacter();
   character.name_ = 'BarFoo';
   character.sex_ = GDCharacter.Sex.Female;
   character.hc_ = true;
@@ -30,10 +30,10 @@ test('Read freshly created woman hc character', async () => {
 });
 
 test('Read character file that just started game', async () => {
-  const buffer = await fs.readFile("test/data/just_started_game.gdc");
+  const buffer = await fs.readFile('test/data/just_started_game.gdc');
   const reader = new GDCharacterReader(buffer.buffer);
 
-  let character = new GDCharacter();
+  const character = new GDCharacter();
   character.name_ = 'FooBar';
   character.sex_ = GDCharacter.Sex.Male;
 
@@ -63,19 +63,19 @@ test('Read character file that just started game', async () => {
       new GDEquipmentSlot({
         item: {
           baseName: 'records/items/gearaccessories/necklaces/a00_necklace.dbr',
-        }
+        },
       }),
       new GDEquipmentSlot({
         item: {
           baseName: 'records/items/geartorso/a00_torso001.dbr',
           seed: 291725479,
-        }
+        },
       }),
       new GDEquipmentSlot({
         item: {
           baseName: 'records/items/gearlegs/a00_legs01.dbr',
           seed: 1186045339,
-        }
+        },
       }),
       new GDEquipmentSlot(),
       new GDEquipmentSlot(),
@@ -110,10 +110,10 @@ test('Read character file that just started game', async () => {
 });
 
 test('Read dead hc character', async () => {
-  const buffer = await fs.readFile("test/data/dead_hc.gdc");
+  const buffer = await fs.readFile('test/data/dead_hc.gdc');
   const reader = new GDCharacterReader(buffer.buffer);
 
-  let character = new GDCharacter();
+  const character = new GDCharacter();
   character.name_ = 'BarFoo';
   character.sex_ = GDCharacter.Sex.Female;
   character.hc_ = true;
@@ -152,7 +152,7 @@ test('Read dead hc character', async () => {
       items: [
         new GDInventoryItem(),
         new GDInventoryItem({position: {x: 0, y: 1}}),
-       ],
+      ],
     }],
     focused: 0,
     selected: 0,
@@ -166,13 +166,13 @@ test('Read dead hc character', async () => {
         item: {
           baseName: 'records/creatures/npcs/npcgear/npc_torso002.dbr',
           seed: 364806682,
-        }
+        },
       }),
       new GDEquipmentSlot({
         item: {
           baseName: 'records/items/gearlegs/a00_legs01.dbr',
           seed: 1055511896,
-        }
+        },
       }),
       new GDEquipmentSlot(),
       new GDEquipmentSlot(),
@@ -203,7 +203,7 @@ test('Read dead hc character', async () => {
     ],
   });
 
-  character.tutorial_ = [ 7, 26, 13, 15, 61, 44, 45 ];
+  character.tutorial_ = [7, 26, 13, 15, 61, 44, 45];
 
   character.tokens_ = [
     ['SURVIVALMODE_STARTERCHEST'],

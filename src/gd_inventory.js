@@ -3,6 +3,9 @@
  * items, etc.
  */
 class GDInventory {
+  /**
+   * @param {?Object} init optional initialisation object
+   */
   constructor(init = null) {
     /** Inventory bags (including the main one). */
     this.bags_ = (init && init.bags != null) ? init.bags : 1;
@@ -14,7 +17,8 @@ class GDInventory {
     this.selected_ = (init && init.selected != null) ? init.selected : 0;
 
     /** TODO: what and type */
-    this.useAlternate_ = (init && init.useAlternate != null) ? init.useAlternate : 0;
+    this.useAlternate_ =
+      (init && init.useAlternate != null) ? init.useAlternate : 0;
 
     /** Slots for each piece of equipment. */
     // TODO: add enum for eatch position (0-11)
@@ -40,4 +44,4 @@ class GDInventory {
   }
 }
 
-module.exports = {GDInventory}
+module.exports = {GDInventory};

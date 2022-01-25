@@ -4,68 +4,165 @@
  * at the beginning of the game.
  */
 class GDPlayStats {
+  /**
+   * @param {?Object} init optional initialisation object
+   */
   constructor(init = null) {
     /** Total play time (in seconds). */
-    this.playTime_ = (init && init.playTime != null) ? init.playTime : 0;
+    this.playTime_ = 0;
 
     /**
      * Total number of deaths.
      * For HC character, 1 means that the character can no longer be played.
      */
-    this.deaths_ = (init && init.deaths != null) ? init.deaths : 0;
+    this.deaths_ = 0;
 
     /** Total number of kills. */
-    this.kills_ = (init && init.kills != null) ? init.kills : 0;
+    this.kills_ = 0;
 
-    this.experienceFromKills_ = (init && init.experienceFromKills != null) ? init.experienceFromKills : 0;
-    this.healthPotionsUsed_ = (init && init.healthPotionsUsed != null) ? init.healthPotionsUsed : 0;
-    this.manaPotionsUsed_ = (init && init.manaPotionsUsed != null) ? init.manaPotionsUsed : 0;
-    this.maxLevel_ = (init && init.maxLevel != null) ? init.maxLevel : 1;
-    this.hitsReceived_ = (init && init.hitsReceived != null) ? init.hitsReceived : 0;
-    this.hitsInflicted_ = (init && init.hitsInflicted != null) ? init.hitsInflicted : 0;
-    this.criticalHitsInflicted_ = (init && init.criticalHitsInflicted != null) ? init.criticalHitsInflicted : 0;
-    this.criticalHitsReceived_ = (init && init.criticalHitsReceived != null) ? init.criticalHitsReceived : 0;
-    this.greatestDamageInflicted_ = (init && init.greatestDamageInflicted != null) ? init.greatestDamageInflicted : 0;
+    this.experienceFromKills_ = 0;
+    this.healthPotionsUsed_ = 0;
+    this.manaPotionsUsed_ = 0;
+    this.maxLevel_ = 1;
+    this.hitsReceived_ = 0;
+    this.hitsInflicted_ = 0;
+    this.criticalHitsInflicted_ = 0;
+    this.criticalHitsReceived_ = 0;
+    this.greatestDamageInflicted_ = 0;
 
-    this.greatestMonsterKilledName_ = (init && init.greatestMonsterKilledName != null) ? init.greatestMonsterKilledName : ['', '', ''];
-    this.greatestMonsterKilledLevel_ = (init && init.greatestMonsterKilledLevel != null) ? init.greatestMonsterKilledLevel : [0, 0, 0];
-    this.greatestMonsterKilledLifeAndMana_ = (init && init.greatestMonsterKilledLifeAndMana != null) ? init.greatestMonsterKilledLifeAndMana : [0, 0, 0];
-    this.lastMonsterHit_ = (init && init.lastMonsterHit != null) ? init.lastMonsterHit : ['', '', ''];
-    this.lastMonsterHitBy_ = (init && init.lastMonsterHitBy != null) ? init.lastMonsterHitBy : ['', '', ''];
-  
-    this.championKills_ = (init && init.championKills != null) ? init.championKills : 0;
-    this.lastHit_ = (init && init.lastHit != null) ? init.lastHit : 0;
-    this.lastHitBy_ = (init && init.lastHitBy != null) ? init.lastHitBy : 0;
-    this.greatestDamageReceived_ = (init && init.greatestDamageReceived != null) ? init.greatestDamageReceived : 0;
-    this.herosKilled_ = (init && init.herosKilled != null) ? init.herosKilled : 0;
-    this.itemsCrafted_ = (init && init.itemsCrafted != null) ? init.itemsCrafted : 0;
-    this.relicsCrafted_ = (init && init.relicsCrafted != null) ? init.relicsCrafted : 0;
-    this.transcendentRelicsCrafted_ = (init && init.transcendentRelicsCrafted != null) ? init.transcendentRelicsCrafted : 0;
-    this.mythicalRelicsCrafted_ = (init && init.mythicalRelicsCrafted != null) ? init.mythicalRelicsCrafted : 0;
-    this.shrinesRestored_ = (init && init.shrinesRestored != null) ? init.shrinesRestored : 0;
-    this.oneShotChestsOpened_ = (init && init.oneShotChestsOpened != null) ? init.oneShotChestsOpened : 0;
-    this.loreNotesCollected_ = (init && init.loreNotesCollected != null) ? init.loreNotesCollected : 0;
+    this.greatestMonsterKilledName_ = ['', '', ''];
+    this.greatestMonsterKilledLevel_ = [0, 0, 0];
+    this.greatestMonsterKilledLifeAndMana_ = [0, 0, 0];
+    this.lastMonsterHit_ = ['', '', ''];
+    this.lastMonsterHitBy_ = ['', '', ''];
 
-    this.bossKills_ = (init && init.bossKills != null) ? init.bossKills : [0, 0, 0];
+    this.championKills_ = 0;
+    this.lastHit_ = 0;
+    this.lastHitBy_ = 0;
+    this.greatestDamageReceived_ = 0;
+    this.herosKilled_ = 0;
+    this.itemsCrafted_ = 0;
+    this.relicsCrafted_ = 0;
+    this.transcendentRelicsCrafted_ = 0;
+    this.mythicalRelicsCrafted_ = 0;
+    this.shrinesRestored_ = 0;
+    this.oneShotChestsOpened_ = 0;
+    this.loreNotesCollected_ = 0;
+
+    this.bossKills_ = [0, 0, 0];
 
     // Crucible.
 
     /** Greatest Crucible Tier this character survived. */
-    this.survivalWaveTier_ = (init && init.survivalWaveTier != null) ? init.survivalWaveTier : 0;
+    this.survivalWaveTier_ = 0;
     /** Greatest Crucible Score this character received. */
-    this.greatestSurvivalScore_ = (init && init.greatestSurvivalScore != null) ? init.greatestSurvivalScore : 0;
-    this.cooldownRemaining_ = (init && init.cooldownRemaining != null) ? init.cooldownRemaining : 0;
-    this.cooldownTotal_ = (init && init.cooldownTotal != null) ? init.cooldownTotal : 0;
+    this.greatestSurvivalScore_ = 0;
+    this.cooldownRemaining_ = 0;
+    this.cooldownTotal_ = 0;
 
-    this.unknownVector_ = (init && init.unknownVector != null) ? init.unknownVector : [];
+    this.unknownVector_ = [];
 
-    this.shatteredRealmSouls_ = (init && init.shatteredRealmSouls != null) ? init.shatteredRealmSouls : 0;
-    this.shatteredRealmEssence_ = (init && init.shatteredRealmEssence != null) ? init.shatteredRealmEssence : 0;
-    this.difficultySkip_ = (init && init.difficultySkip != null) ? init.difficultySkip : 0;
+    this.shatteredRealmSouls_ = 0;
+    this.shatteredRealmEssence_ = 0;
+    this.difficultySkip_ = 0;
 
-    this.unknown1_ = (init && init.unknown1 != null) ? init.unknown1 : 0;
-    this.unknown2_ = (init && init.unknown2 != null) ? init.unknown2 : 0;
+    this.unknown1_ = 0;
+    this.unknown2_ = 0;
+
+    if (init) {
+      this.init_(init);
+    }
+  }
+
+  /**
+   * Initialise the instance based on the given init object.
+   * @param {!Object} init
+   */
+  init_(init) {
+    if (init.playTime != null) this.playTime_ = init.playTime;
+    if (init.deaths != null) this.deaths_ = init.deaths;
+    if (init.kills != null) this.kills_ = init.kills;
+    if (init.experienceFromKills != null) {
+      this.experienceFromKills_ = init.experienceFromKills;
+    }
+    if (init.healthPotionsUsed != null) {
+      this.healthPotionsUsed_ = init.healthPotionsUsed;
+    }
+    if (init.manaPotionsUsed != null) {
+      this.manaPotionsUsed_ = init.manaPotionsUsed;
+    }
+    if (init.maxLevel != null) this.maxLevel_ = init.maxLevel;
+    if (init.hitsReceived != null) this. hitsReceived_ = init.hitsReceived;
+    if (init.hitsInflicted != null) this.hitsInflicted_ = init.hitsInflicted;
+    if (init.criticalHitsInflicted != null) {
+      this.criticalHitsInflicted_ = init.criticalHitsInflicted;
+    }
+    if (init.criticalHitsReceived != null) {
+      this.criticalHitsReceived_ = init.criticalHitsReceived;
+    }
+    if (init.greatestDamageInflicted != null) {
+      this.greatestDamageInflicted_ = init.greatestDamageInflicted;
+    }
+    if (init.greatestMonsterKilledName != null) {
+      this.greatestMonsterKilledName_ = init.greatestMonsterKilledName;
+    }
+    if (init.greatestMonsterKilledLevel != null) {
+      this.greatestMonsterKilledLevel_ = init.greatestMonsterKilledLevel;
+    }
+    if (init.greatestMonsterKilledLifeAndMana != null) {
+      this.greatestMonsterKilledLifeAndMana_ =
+        init.greatestMonsterKilledLifeAndMana;
+    }
+    if (init.lastMonsterHit != null) this.lastMonsterHit_ = init.lastMonsterHit;
+    if (init.lastMonsterHitBy != null) {
+      this.lastMonsterHitBy_ = init.lastMonsterHitBy;
+    }
+    if (init.championKills != null) this.championKills_ = init.championKills;
+    if (init.lastHit != null) this.lastHit_ = init.lastHit;
+    if (init.lastHitBy != null) this.lastHitBy_ = init.lastHitBy;
+    if (init.greatestDamageReceived != null) {
+      this.greatestDamageReceived_ = init.greatestDamageReceived;
+    }
+    if (init.herosKilled != null) this.herosKilled_ = init.herosKilled;
+    if (init.itemsCrafted != null) this.itemsCrafted_ = init.itemsCrafted;
+    if (init.relicsCrafted != null) this.relicsCrafted_ = init.relicsCrafted;
+    if (init.transcendentRelicsCrafted != null) {
+      this.transcendentRelicsCrafted_ = init.transcendentRelicsCrafted;
+    }
+    if (init.mythicalRelicsCrafted != null) {
+      this.mythicalRelicsCrafted_ = init.mythicalRelicsCrafted;
+    }
+    if (init.shrinesRestored != null) {
+      this.shrinesRestored_ = init.shrinesRestored;
+    }
+    if (init.oneShotChestsOpened != null) {
+      this.oneShotChestsOpened_ = init.oneShotChestsOpened;
+    }
+    if (init.loreNotesCollected != null) {
+      this.loreNotesCollected_ = init.loreNotesCollected;
+    }
+    if (init.bossKills != null) this.bossKills_ = init.bossKills;
+    if (init.survivalWaveTier != null) {
+      this.survivalWaveTier_ = init.survivalWaveTier;
+    }
+    if (init.greatestSurvivalScore != null) {
+      this.greatestSurvivalScore_ = init.greatestSurvivalScore;
+    }
+    if (init.cooldownRemaining != null) {
+      this.cooldownRemaining_ = init.cooldownRemaining;
+    }
+    if (init.cooldownTotal != null) this.cooldownTotal_ = init.cooldownTotal;
+    if (init.unknownVector != null) this.unknownVector_ = init.unknownVector;
+    if (init.shatteredRealmSouls != null) {
+      this.shatteredRealmSouls_ = init.shatteredRealmSouls;
+    }
+    if (init.shatteredRealmEssence != null) {
+      this.shatteredRealmEssence_ = init.shatteredRealmEssence;
+    }
+    if (init.difficultySkip != null) this.difficultySkip_ = init.difficultySkip;
+    if (init.unknown1 != null) this.unknown1_ = init.unknown1;
+    if (init.unknown2 != null) this.unknown2_ = init.unknown2;
   }
 }
 
-module.exports = {GDPlayStats}
+module.exports = {GDPlayStats};

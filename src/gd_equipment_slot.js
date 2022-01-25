@@ -7,14 +7,18 @@ const {GDItem} = require('./gd_item');
  * class behaves differently to make the API simpler.
  */
 class GDEquipmentSlot {
+  /**
+   * @param {?Object} init optional initialisation object
+   */
   constructor(init = null) {
     /** Item in the equipment slot if any. Will be null if no item. */
     this.item_ = null;
-    
+
     if (init && init.item != null) {
-      this.item_ = (init.item instanceof GDItem) ? init.item : new GDItem(init.item);
+      this.item_ =
+        (init.item instanceof GDItem) ? init.item : new GDItem(init.item);
     }
   }
 }
 
-module.exports = {GDEquipmentSlot}
+module.exports = {GDEquipmentSlot};
