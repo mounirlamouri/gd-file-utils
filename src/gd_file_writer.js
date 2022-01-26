@@ -11,14 +11,14 @@ class GDFileWriter {
      * TODO: add mechanism for increasing in size.
      * TODO: pick better default size.
      */
-    const BUFFER_SIZE = 2048;
+    const BUFFER_SIZE = 4096;
     this.buffer_ = new ArrayBuffer(BUFFER_SIZE);
 
     this.writeOffset_ = 0;
   }
 
   /**
-   * Internal method to write strings either as 1-byte or 2-byte.
+   * Internal method to write strings either as 1-byte or 2-byte characters.
    * @param {string} value to write
    * @param {bool} wide whether the string should be written 2-byte char
    */
