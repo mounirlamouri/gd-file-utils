@@ -104,7 +104,7 @@ class GDCharacterWriter {
     this.writer_.writeInt(item.unknown_);
     this.writer_.writeInt(item.augmentSeed_);
     this.writer_.writeInt(item.unknown1_);
-    this.writer_.writeInt(item.stackCount_);
+    this.writer_.writeInt(item.stackSize_);
   }
 
   /**

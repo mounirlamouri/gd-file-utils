@@ -160,6 +160,7 @@ test('Read dead hc character', async () => {
           item: {
             baseName: 'records/items/misc/potions/potion_healtha01.dbr',
             seed: 705949125,
+            stackSize: 4,
           },
           position: {x: 0, y: 0},
         }),
@@ -167,6 +168,7 @@ test('Read dead hc character', async () => {
           item: {
             baseName: 'records/items/misc/potions/potion_energya01.dbr',
             seed: 1187125862,
+            stackSize: 2,
           },
           position: {x: 0, y: 1},
         }),

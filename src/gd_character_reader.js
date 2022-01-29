@@ -126,7 +126,7 @@ class GDCharacterReader {
     item.unknown = this.reader_.readInt();
     item.augmentSeed = this.reader_.readInt();
     item.unknown1 = this.reader_.readInt();
-    item.stackCount = this.reader_.readInt();
+    item.stackSize = this.reader_.readInt();
 
     return new GDItem(item);
   }
