@@ -13,6 +13,7 @@ test('Read freshly created man sc character', async () => {
   character.name_ = 'FooBar';
   character.sex_ = GDCharacter.Sex.Male;
   character.texture_ = 'creatures/pc/hero02.tex';
+  character.fileInfo_.key = 327214724;
 
   expect(reader.read()).toStrictEqual(character);
 });
@@ -25,6 +26,7 @@ test('Read freshly created woman hc character', async () => {
   character.name_ = 'BarFoo';
   character.sex_ = GDCharacter.Sex.Female;
   character.hc_ = true;
+  character.fileInfo_.key = 307750195;
 
   expect(reader.read()).toStrictEqual(character);
 });
@@ -36,6 +38,8 @@ test('Read character file that just started game', async () => {
   const character = new GDCharacter();
   character.name_ = 'FooBar';
   character.sex_ = GDCharacter.Sex.Male;
+
+  character.fileInfo_.key = 1703178453;
 
   character.difficulty_ = 16; // Normal Veteran.
   character.texture_ = 'creatures/pc/hero02.tex';
@@ -119,6 +123,8 @@ test('Read dead hc character', async () => {
   character.hc_ = true;
   character.hasBeenInGame_ = true;
   character.money_ = 250;
+
+  character.fileInfo_.key = 1717460715;
 
   for (let i = 0; i < character.skills_.length; ++i) {
     if (i == character.skills_.length - 1) {
@@ -213,3 +219,110 @@ test('Read dead hc character', async () => {
 
   expect(reader.read()).toStrictEqual(character);
 });
+
+// test('Read crucible one round character', async () => {
+//   const buffer = await fs.readFile('test/data/crucible_one_round.gdc');
+//   const reader = new GDCharacterReader(buffer.buffer);
+
+//   const character = new GDCharacter();
+//   character.name_ = 'BarFoo';
+//   character.sex_ = GDCharacter.Sex.Female;
+//   character.hc_ = true;
+//   character.hasBeenInGame_ = true;
+//   character.money_ = 9955175;
+//   character.masteriesAllowed_ = 1;
+
+//   for (let i = 0; i < character.skills_.length; ++i) {
+//     if (i == character.skills_.length - 1) {
+//       character.skills_[i].enabled_ = false;
+//     } else {
+//       character.skills_[i].enabled_ = true;
+//     }
+//   }
+
+//   character.playStats_.criticalHitsInflicted_ = 16;
+//   character.playStats_.deaths_ = 0;
+//   character.playStats_.greatestDamageInflicted_ = 74.00344848632812;
+//   character.playStats_.greatestDamageReceived_ = 38.32691955566406;
+//   character.playStats_.greatestMonsterKilledLevel_[0] = 3;
+//   character.playStats_.greatestMonsterKilledLifeAndMana_[0] = 356;
+// character.playStats_.greatestMonsterKilledName_[0] = 'tagEnemyGolemRockA01';
+//   character.playStats_.greatestSurvivalScore_ = 1120;
+//   character.playStats_.survivalWaveTier_ = 10;
+//   character.playStats_.hitsInflicted_ = 541;
+//   character.playStats_.hitsReceived_ = 683;
+//   character.playStats_.kills_ = 196;
+//   character.playStats_.lastHitBy_ = 108.02639770507812;
+//   character.playStats_.lastHit_ = 120.1925048828125;
+//   character.playStats_.lastMonsterHitBy_[0] = 'tagEnemySkeletonA02';
+//   character.playStats_.lastMonsterHit_[0] = 'tagEnemySkeletonA02';
+//   character.playStats_.playTime_ = 246;
+//   character.playStats_.healthPotionsUsed_ = 7;
+
+//   character.inventory_ = new GDInventory({
+//     bags: [{
+//       unknown: 0,
+//       items: [
+//         new GDInventoryItem(),
+//         new GDInventoryItem({position: {x: 0, y: 1}}),
+//       ],
+//     }],
+//     focused: 0,
+//     selected: 0,
+//     useAlternate: 0,
+//     alternate1: 0,
+//     alternate2: 1,
+//     equipment: [
+//       new GDEquipmentSlot(),
+//       new GDEquipmentSlot(),
+//       new GDEquipmentSlot({
+//         item: {
+//           baseName: 'records/creatures/npcs/npcgear/npc_torso002.dbr',
+//           seed: 364806682,
+//         },
+//       }),
+//       new GDEquipmentSlot({
+//         item: {
+//           baseName: 'records/items/gearlegs/a00_legs01.dbr',
+//           seed: 1055511896,
+//         },
+//       }),
+//       new GDEquipmentSlot(),
+//       new GDEquipmentSlot(),
+//       new GDEquipmentSlot(),
+//       new GDEquipmentSlot(),
+//       new GDEquipmentSlot(),
+//       new GDEquipmentSlot(),
+//       new GDEquipmentSlot(),
+//       new GDEquipmentSlot(),
+//     ],
+//     weapons1: [
+//       new GDEquipmentSlot({
+//         item: {
+//           baseName: 'records/items/gearweapons/blunt1h/a00_blunt001.dbr',
+//           seed: 1658359174,
+//         },
+//       }),
+//       new GDEquipmentSlot({
+//         item: {
+//           baseName: 'records/items/gearweapons/shields/a00_shield01.dbr',
+//           seed: 122717080,
+//         },
+//       }),
+//     ],
+//     weapons2: [
+//       new GDEquipmentSlot(),
+//       new GDEquipmentSlot(),
+//     ],
+//   });
+
+//   character.tutorial_ = [7, 26, 13, 15, 61, 44, 45];
+
+//   character.tokens_ = [
+//     ['SURVIVALMODE_STARTERCHEST'],
+//     [],
+//     [],
+//   ];
+
+//   expect(reader.read()).toStrictEqual(character);
+// });

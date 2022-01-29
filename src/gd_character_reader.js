@@ -7,6 +7,7 @@ const {GDInventory} = require('./gd_inventory');
 const {GDInventoryItem} = require('./gd_inventory_item');
 const {GDItem} = require('./gd_item');
 const {GDSkill} = require('./gd_skill');
+// const {GDStashItem} = require('./gd_stash_item');
 const {GDPlayStats} = require('./gd_play_stats');
 const {GDUiSettings} = require('./gd_ui_settings');
 
@@ -235,6 +236,19 @@ class GDCharacterReader {
   }
 
   /**
+   * Reads a stash tab item.
+   * @return {GDStashItem} the parsed stash item
+   */
+  readStashItem_() {
+    const item = this.readItem_();
+    item.position = {};
+    item.position.x = this.reader_.readFloat();
+    item.position.y = this.reader_.readFloat();
+
+    return new GDStashItem(item);
+  }
+
+  /**
    * Reads a stash tab block.
    * @return {Object} the parsed stash tab.
    */
@@ -249,10 +263,11 @@ class GDCharacterReader {
     stash.width = this.reader_.readInt();
     stash.height = this.reader_.readInt();
 
-    const itemCount = this.reader_.readInt();
-    for (let i = 0; i < itemCount; ++i) {
-      // TODO: items
-    }
+    this.reader_.readInt();
+    // stash.items = new Array(this.reader_.readInt());
+    // for (let i = 0; i < stash.items.length; ++i) {
+    //   stash.items[i] = this.readStashItem_();
+    // }
 
     this.reader_.readBlockEnd(block);
 
@@ -693,7 +708,7 @@ class GDCharacterReader {
    * @return {GDCharacter} returns the parsed character
    */
   read() {
-    this.reader_.readKey();
+    this.character_.fileInfo_.key = this.reader_.readKey();
 
     if (this.reader_.readInt() != 0x58434447) {
       throw new Error('Hardcoded int set to 0x58434447 not found!');
@@ -719,8 +734,8 @@ class GDCharacterReader {
       throw new Error('Hardcoded byte set to 0 not found!');
     }
 
-    this.character_.version_ = this.reader_.readInt();
-    if (this.character_.version_ != 8) {
+    this.character_.fileInfo_.version = this.reader_.readInt();
+    if (this.character_.fileInfo_.version != 8) {
       throw new Error('Only v8 character files are supported.');
     }
 

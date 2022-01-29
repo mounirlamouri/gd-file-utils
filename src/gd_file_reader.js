@@ -79,6 +79,7 @@ class GDFileReader {
 
   /**
    * Reads the key at the beginning of the file and setup the table.
+   * @return {Uint32} the parsed key
    */
   readKey() {
     const data = new Uint32Array(this.buffer_, this.readOffset_, 1);
@@ -98,6 +99,8 @@ class GDFileReader {
 
       this.table_[i] = key[0];
     }
+
+    return (this.key_[0] ^ 0x55555555);
   }
 
   /**

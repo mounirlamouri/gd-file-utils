@@ -546,7 +546,7 @@ class GDCharacterWriter {
    * @return {ArrayBuffer} returns the generated character save file
    */
   write() {
-    this.writer_.writeKey();
+    this.writer_.writeKey(this.character_.fileInfo_.key);
 
     // Two hardcoded int.
     this.writer_.writeInt(0x58434447);
@@ -561,7 +561,7 @@ class GDCharacterWriter {
 
     this.writer_.writeInt(0, false /* keyUpdate */);
 
-    this.writer_.writeInt(this.character_.version_);
+    this.writer_.writeInt(this.character_.fileInfo_.version);
 
     this.writeUid_();
 

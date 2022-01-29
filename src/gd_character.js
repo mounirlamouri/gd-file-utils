@@ -34,9 +34,6 @@ class GDCharacter {
     /** Whether the character is a hardcore character. */
     this.hc_ = false;
 
-    /** Version of the character save file. */
-    this.version_ = 8; // 8 is currently the only version supported.
-
     /** UID of the character. */
     // TODO: create UID type
     this.uid_ =
@@ -239,6 +236,20 @@ class GDCharacter {
 
     /** Tokens associated to the character by difficulty level. */
     this.tokens_ = [[], [], []];
+
+    /** Information related to the character save file. */
+    this.fileInfo_ = {
+      /**
+       * Version of the character save file.
+       * 8 is currently the only version supported.
+       */
+      version: 8,
+      /**
+       * Key used to encrypt/decrypt the file.
+       * 0x55555555 allows for clear encryption.
+       */
+      key: 0x55555555,
+    };
   }
 }
 
