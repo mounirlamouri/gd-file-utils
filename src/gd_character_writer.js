@@ -559,7 +559,7 @@ class GDCharacterWriter {
     // TODO: verify.
     this.writer_.writeByte(this.character_.hasBeenInGame_ ? 3 : 1);
 
-    this.writer_.writeInt(0);
+    this.writer_.writeInt(0, false /* keyUpdate */);
 
     this.writer_.writeInt(this.character_.version_);
 

@@ -3,7 +3,7 @@
  */
 class GDFileWriter {
   /**
-   * @param {?Object} init optional initialisation object
+   * Constructor.
    */
   constructor() {
     /**
@@ -14,7 +14,33 @@ class GDFileWriter {
     const BUFFER_SIZE = 4096;
     this.buffer_ = new ArrayBuffer(BUFFER_SIZE);
 
+    /**
+     * Current position when writing in the buffer.
+     */
     this.writeOffset_ = 0;
+
+    /**
+     * Key used to encrypt the data. Using Uint32Array to guarantee a behaviour
+     * matching uint32_t with regards to overflow.
+     */
+    this.key_ = new Uint32Array(1);
+
+    /**
+     * Table used to decrypt the data. Using Uint32Array to guarantee a
+     * behaviour matching uint32_t with regards to overflow.
+     */
+    this.table_ = new Uint32Array(256);
+  }
+
+  /**
+   * Update the key_ based on the recently read |bytes|. Involves updating the
+   * table_.
+   * @param {!Array} bytes
+   */
+  updateKey_(bytes) {
+    for (let i = 0; i < bytes.length; ++i) {
+      this.key_[0] ^= this.table_[bytes[i]];
+    }
   }
 
   /**
@@ -44,11 +70,25 @@ class GDFileWriter {
 
   /**
    * Writes the file key.
-   * Defaults to 0x55555555 at the moment as it avoids encrypting the file.
-   * TODO: allow to take a specific key.
+   * @param {Uint32} value to use to encrypt the file, 0x55555555 by default.
    */
-  writeKey() {
-    this.writeInt(0x55555555);
+  writeKey(value = 0x55555555) {
+    const key = new Uint32Array([value]);
+
+    const data = new DataView(this.buffer_, this.writeOffset_, 4);
+    this.writeOffset_ += 4;
+    data.setUint32(0, key[0], true /* littleIndian */);
+
+    key[0] ^= 0x55555555;
+    this.key_[0] = key[0];
+
+    // Setup table_.
+    for (let i = 0; i < this.table_.length; ++i) {
+      key[0] = key[0] >>> 1 | key[0] << 31;
+      key[0] = Math.imul(key[0], 39916801);
+
+      this.table_[i] = key[0];
+    }
   }
 
   /**
@@ -67,24 +107,46 @@ class GDFileWriter {
     const data = new DataView(this.buffer_, this.writeOffset_, 1);
     this.writeOffset_ += 1;
 
-    data.setUint8(0, value, true /* littleIndian */);
+    const toWrite = new Uint8Array([value]);
+    toWrite[0] ^= this.key_[0];
+    data.setUint8(0, toWrite[0]);// , true /* littleIndian */);
+
+    this.updateKey_(toWrite);
   }
 
   /**
    * Write an int as 4 bytes.
    * @param {Number} value to write
+   * @param {bool} keyUpdate whether the table/key should be updated
    * @param {Number} offset to use (default to null)
    */
-  writeInt(value, offset = null) {
-    let data = null;
+  writeInt(value, keyUpdate = true, offset = null) {
     if (offset != null) {
-      data = new DataView(this.buffer_, offset, 4);
-    } else {
-      data = new DataView(this.buffer_, this.writeOffset_, 4);
-      this.writeOffset_ += 4;
+      // When writing back, we read the key where we are supposed to write.
+      const data = new DataView(this.buffer_, offset, 4);
+      const toWrite = new Uint32Array([value]);
+      toWrite[0] ^= data.getUint32(0, true /* littleIndian */);
+      data.setUint32(0, toWrite[0], true /* littleEndian */);
+
+      if (keyUpdate != false) {
+        throw new Error('keyUpdate is not possible when writing backward');
+      }
+
+      return;
     }
 
-    data.setUint32(0, value, true /* littleIndian */);
+    const data = new DataView(this.buffer_, this.writeOffset_, 4);
+    this.writeOffset_ += 4;
+
+    const toWrite = new Uint32Array([value]);
+    toWrite[0] ^= this.key_[0];
+    data.setUint32(0, toWrite[0], true /* littleIndian */);
+
+    if (keyUpdate) {
+      this.updateKey_([
+        data.getUint8(0), data.getUint8(1), data.getUint8(2), data.getUint8(3),
+      ]);
+    }
   }
 
   /**
@@ -92,9 +154,9 @@ class GDFileWriter {
    * @param {Float32} value to write
    */
   writeFloat(value) {
-    const data = new DataView(this.buffer_, this.writeOffset_, 4);
-    this.writeOffset_ += 4;
-    data.setFloat32(0, value, true /* littleIndian */);
+    const data = new DataView(new ArrayBuffer(4));
+    data.setFloat32(0, value, true /* littleEndian */);
+    this.writeInt(data.getUint32(0, true /* littleEndian */));
   }
 
   /**
@@ -123,8 +185,9 @@ class GDFileWriter {
   writeBlockStart(key) {
     this.writeInt(key);
 
-    // Writes 0 where we would otherwise write the size of the block.
-    this.writeInt(0);
+    // Writes 0 where we would otherwise write the size of the block, this will
+    // actually write the key that should be used and will be used later.
+    this.writeInt(0, false /* keyUpdate */);
 
     // Returns the index to the start of the block's body.
     return this.writeOffset_;
@@ -137,10 +200,10 @@ class GDFileWriter {
   writeBlockEnd(index) {
     // Write the length (current offset - start offset) at start - 4 to write
     // it before the block body actually starts.
-    this.writeInt(this.writeOffset_ - index, index - 4);
+    this.writeInt(this.writeOffset_ - index, false /* keyUpdate */, index - 4);
 
     // A block has a trailing 0.
-    this.writeInt(0);
+    this.writeInt(0, false /* keyUpdate */);
   }
 
   /**
