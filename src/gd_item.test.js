@@ -22,7 +22,7 @@ test('Constructor with no fields', () => {
   expect(item).toStrictEqual(expected);
 });
 
-test('Constructor with item all fields', () => {
+test('Constructor with item all fields (Object)', () => {
   const item = new GDItem({
     baseName: 'b',
     prefixName: 'p',
@@ -39,6 +39,43 @@ test('Constructor with item all fields', () => {
     unknown1: 5,
     stackSize: 6,
   });
+
+  const expected = new GDItem();
+  expected.baseName_ = 'b';
+  expected.prefixName_ = 'p';
+  expected.suffixName_ = 's';
+  expected.modifierName_ = 'm';
+  expected.transmuteName_ = 't';
+  expected.seed_ = 1;
+  expected.componentName_ = 'c';
+  expected.relicBonus_ = 'r';
+  expected.componentSeed_ = 2;
+  expected.augmentName_ = 'a';
+  expected.unknown_ = 3;
+  expected.augmentSeed_ = 4;
+  expected.unknown1_ = 5;
+  expected.stackSize_ = 6;
+
+  expect(item).toStrictEqual(expected);
+});
+
+test('Constructor with item all fields (GDItem)', () => {
+  const item = new GDItem(new GDItem({
+    baseName: 'b',
+    prefixName: 'p',
+    suffixName: 's',
+    modifierName: 'm',
+    transmuteName: 't',
+    seed: 1,
+    componentName: 'c',
+    relicBonus: 'r',
+    componentSeed: 2,
+    augmentName: 'a',
+    unknown: 3,
+    augmentSeed: 4,
+    unknown1: 5,
+    stackSize: 6,
+  }));
 
   const expected = new GDItem();
   expected.baseName_ = 'b';

@@ -149,9 +149,9 @@ class GDCharacterReader {
    * @return {GDInventoryItem} the parsed item.
    */
   readInventoryItem_() {
-    const item = this.readItem_();
+    const item = {position: {}};
 
-    item.position = {};
+    item.item = this.readItem_();
     item.position.x = this.reader_.readInt();
     item.position.y = this.reader_.readInt();
 

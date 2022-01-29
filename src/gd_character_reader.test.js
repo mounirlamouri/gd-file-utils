@@ -156,8 +156,20 @@ test('Read dead hc character', async () => {
     bags: [{
       unknown: 0,
       items: [
-        new GDInventoryItem(),
-        new GDInventoryItem({position: {x: 0, y: 1}}),
+        new GDInventoryItem({
+          item: {
+            baseName: 'records/items/misc/potions/potion_healtha01.dbr',
+            seed: 705949125,
+          },
+          position: {x: 0, y: 0},
+        }),
+        new GDInventoryItem({
+          item: {
+            baseName: 'records/items/misc/potions/potion_energya01.dbr',
+            seed: 1187125862,
+          },
+          position: {x: 0, y: 1},
+        }),
       ],
     }],
     focused: 0,

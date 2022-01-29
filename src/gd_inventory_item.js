@@ -9,7 +9,7 @@ class GDInventoryItem extends GDItem {
    * @param {?Object} init optional initialisation object
    */
   constructor(init = null) {
-    super(init);
+    super(init ? init.item : null);
 
     this.position_ =
       (init && init.position != null) ? init.position : {x: 0, y: 0};
