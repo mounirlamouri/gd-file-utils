@@ -1,6 +1,5 @@
 const {GDFileWriter} = require('./gd_file_writer');
 const {GDHotSlot} = require('./gd_hot_slot');
-const {GDItem} = require('./gd_item');
 
 /**
  * GDCharacterWriter is a class that will take a GDCharacter as an input and

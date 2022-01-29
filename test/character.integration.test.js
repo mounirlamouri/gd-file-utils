@@ -51,5 +51,5 @@ test('Reads & writes a gdc, read again (dead_hc.gdc)', async () => {
 
   expect(characterBuffer.byteLength).toEqual(buffer.byteLength);
   expect(new Uint8Array(characterBuffer)).toStrictEqual(
-    new Uint8Array(buffer.buffer));
+      new Uint8Array(buffer.buffer));
 });
