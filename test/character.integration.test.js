@@ -37,9 +37,8 @@ test('Reads & writes a gdc, read again (just_started_game.gdc)', async () => {
   const characterBuffer = writer.write();
 
   expect(characterBuffer.byteLength).toEqual(buffer.byteLength);
-  // TODO: why?
-  // expect(new Uint8Array(characterBuffer)).toStrictEqual(
-  //   new Uint8Array(buffer.buffer));
+  expect(new Uint8Array(characterBuffer)).toStrictEqual(
+      new Uint8Array(buffer.buffer));
 });
 
 test('Reads & writes a gdc, read again (dead_hc.gdc)', async () => {
@@ -51,7 +50,6 @@ test('Reads & writes a gdc, read again (dead_hc.gdc)', async () => {
   const characterBuffer = writer.write();
 
   expect(characterBuffer.byteLength).toEqual(buffer.byteLength);
-  // TODO: why?
-  // expect(new Uint8Array(characterBuffer)).toStrictEqual(
-  //   new Uint8Array(buffer.buffer));
+  expect(new Uint8Array(characterBuffer)).toStrictEqual(
+    new Uint8Array(buffer.buffer));
 });

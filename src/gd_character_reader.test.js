@@ -68,27 +68,30 @@ test('Read character file that just started game', async () => {
         item: {
           baseName: 'records/items/gearaccessories/necklaces/a00_necklace.dbr',
         },
+        used: true,
       }),
       new GDEquipmentSlot({
         item: {
           baseName: 'records/items/geartorso/a00_torso001.dbr',
           seed: 291725479,
         },
+        used: true,
       }),
       new GDEquipmentSlot({
         item: {
           baseName: 'records/items/gearlegs/a00_legs01.dbr',
           seed: 1186045339,
         },
+        used: true,
       }),
-      new GDEquipmentSlot(),
-      new GDEquipmentSlot(),
-      new GDEquipmentSlot(),
-      new GDEquipmentSlot(),
-      new GDEquipmentSlot(),
-      new GDEquipmentSlot(),
-      new GDEquipmentSlot(),
-      new GDEquipmentSlot(),
+      new GDEquipmentSlot({item: {seed: 1186045339}}),
+      new GDEquipmentSlot({item: {seed: 1186045339}}),
+      new GDEquipmentSlot({item: {seed: 1186045339}}),
+      new GDEquipmentSlot({item: {seed: 1186045339}}),
+      new GDEquipmentSlot({item: {seed: 1186045339}}),
+      new GDEquipmentSlot({item: {seed: 1186045339}}),
+      new GDEquipmentSlot({item: {seed: 1186045339}}),
+      new GDEquipmentSlot({item: {seed: 1186045339}}),
     ],
     weapons1: [
       new GDEquipmentSlot({
@@ -96,12 +99,14 @@ test('Read character file that just started game', async () => {
           baseName: 'records/items/gearweapons/blunt1h/a00_blunt001.dbr',
           seed: 1346538007,
         },
+        used: true,
       }),
       new GDEquipmentSlot({
         item: {
           baseName: 'records/items/gearweapons/shields/a00_shield01.dbr',
           seed: 1688427007,
         },
+        used: true,
       }),
     ],
     weapons2: [
@@ -187,21 +192,23 @@ test('Read dead hc character', async () => {
           baseName: 'records/creatures/npcs/npcgear/npc_torso002.dbr',
           seed: 364806682,
         },
+        used: true,
       }),
       new GDEquipmentSlot({
         item: {
           baseName: 'records/items/gearlegs/a00_legs01.dbr',
           seed: 1055511896,
         },
+        used: true,
       }),
-      new GDEquipmentSlot(),
-      new GDEquipmentSlot(),
-      new GDEquipmentSlot(),
-      new GDEquipmentSlot(),
-      new GDEquipmentSlot(),
-      new GDEquipmentSlot(),
-      new GDEquipmentSlot(),
-      new GDEquipmentSlot(),
+      new GDEquipmentSlot({item: {seed: 1055511896}}),
+      new GDEquipmentSlot({item: {seed: 1055511896}}),
+      new GDEquipmentSlot({item: {seed: 1055511896}}),
+      new GDEquipmentSlot({item: {seed: 1055511896}}),
+      new GDEquipmentSlot({item: {seed: 1055511896}}),
+      new GDEquipmentSlot({item: {seed: 1055511896}}),
+      new GDEquipmentSlot({item: {seed: 1055511896}}),
+      new GDEquipmentSlot({item: {seed: 1055511896}}),
     ],
     weapons1: [
       new GDEquipmentSlot({
@@ -209,12 +216,14 @@ test('Read dead hc character', async () => {
           baseName: 'records/items/gearweapons/blunt1h/a00_blunt001.dbr',
           seed: 1658359174,
         },
+        used: true,
       }),
       new GDEquipmentSlot({
         item: {
           baseName: 'records/items/gearweapons/shields/a00_shield01.dbr',
           seed: 122717080,
         },
+        used: true,
       }),
     ],
     weapons2: [

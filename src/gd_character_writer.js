@@ -114,8 +114,8 @@ class GDCharacterWriter {
   writeEquipmentSlot_(slot) {
     // Writes the item if there is one in the slot, otherwise GDItem because the
     // file expected an item regardless of whether the slot is filled.
-    this.writeItem_((slot.item_ != null) ? slot.item_ : new GDItem());
-    this.writer_.writeBool(slot.item_ != null);
+    this.writeItem_(slot.item_);
+    this.writer_.writeBool(slot.used_);
   }
 
   /**

@@ -140,7 +140,8 @@ class GDCharacterReader {
     const used = this.reader_.readByte() ? true : false;
 
     return new GDEquipmentSlot({
-      item: used ? item : null,
+      item: item,
+      used: used,
     });
   }
 
