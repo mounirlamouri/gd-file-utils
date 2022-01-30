@@ -916,7 +916,7 @@ test('Read character with lore and skills', async () => {
   character.hasBeenInGame_ = true;
   character.attributePointsUnspent_ = 2;
   character.bioLevel_ = 3;
-  character.classInfo_ = 'tagSkillClassName04';  // Nightlblade
+  character.classInfo_ = 'tagSkillClassName04'; // Nightlblade
   character.skillPointsUnspent_ = 4;
   character.skillWindowShowHelp_ = 0;
   character.difficulty_ = 16; // Normal Veteran
@@ -928,7 +928,7 @@ test('Read character with lore and skills', async () => {
     'records/items/loreobjects/loreobject_lowercrossinga01.dbr',
   ];
   character.tutorial_ = [
-    7, 26, 9, 15, 44, 14, 48, 18, 13, 45, 31, 8, 21, 22, 23
+    7, 26, 9, 15, 44, 14, 48, 18, 13, 45, 31, 8, 21, 22, 23,
   ];
 
   character.fileInfo_.key = 78928586;
@@ -994,16 +994,16 @@ test('Read character with lore and skills', async () => {
   character.playStats_.lastMonsterHit_[0] ='tagAetherCrystalA01';
 
   character.spawnLocation_[0] = new Uint8Array([110, 143, 45, 112, 149, 79, 56,
-      103, 93, 21, 75, 158, 88, 4, 108, 6]);
+    103, 93, 21, 75, 158, 88, 4, 108, 6]);
   character.spawnDifficulty_[0] = [
-      new Uint8Array([110, 143, 45, 112, 149, 79, 56, 103, 93, 21, 75, 158, 88,
-          4, 108, 6]),
+    new Uint8Array([110, 143, 45, 112, 149, 79, 56, 103, 93, 21, 75, 158, 88,
+      4, 108, 6]),
   ];
   character.teleports_[0] = [
     new Uint8Array([183, 127, 11, 128, 41, 79, 148, 246, 80, 105, 247, 183, 215,
-        108, 231, 83]),
+      108, 231, 83]),
     new Uint8Array([37, 51, 156, 207, 223, 66, 143, 56, 170, 254, 232, 156, 16,
-        230, 145, 63]),
+      230, 145, 63]),
   ];
 
   character.inventory_ = new GDInventory({
