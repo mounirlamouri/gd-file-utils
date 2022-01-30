@@ -7,7 +7,8 @@ const {GDInventory} = require('./gd_inventory');
 const {GDInventoryItem} = require('./gd_inventory_item');
 const {GDItem} = require('./gd_item');
 const {GDSkill} = require('./gd_skill');
-// const {GDStashItem} = require('./gd_stash_item');
+const {GDStashItem} = require('./gd_stash_item');
+const {GDStashTab} = require('./gd_stash_tab');
 const {GDPlayStats} = require('./gd_play_stats');
 const {GDUiSettings} = require('./gd_ui_settings');
 
@@ -241,8 +242,8 @@ class GDCharacterReader {
    * @return {GDStashItem} the parsed stash item
    */
   readStashItem_() {
-    const item = this.readItem_();
-    item.position = {};
+    const item = {position: {}};
+    item.item = this.readItem_();
     item.position.x = this.reader_.readFloat();
     item.position.y = this.reader_.readFloat();
 
@@ -251,7 +252,7 @@ class GDCharacterReader {
 
   /**
    * Reads a stash tab block.
-   * @return {Object} the parsed stash tab.
+   * @return {GDStashTab} the parsed stash tab.
    */
   readStashTab_() {
     const block = this.reader_.readBlockStart();
@@ -264,15 +265,14 @@ class GDCharacterReader {
     stash.width = this.reader_.readInt();
     stash.height = this.reader_.readInt();
 
-    this.reader_.readInt();
-    // stash.items = new Array(this.reader_.readInt());
-    // for (let i = 0; i < stash.items.length; ++i) {
-    //   stash.items[i] = this.readStashItem_();
-    // }
+    stash.items = new Array(this.reader_.readInt());
+    for (let i = 0; i < stash.items.length; ++i) {
+      stash.items[i] = this.readStashItem_();
+    }
 
     this.reader_.readBlockEnd(block);
 
-    return stash;
+    return new GDStashTab(stash);
   }
 
   /**

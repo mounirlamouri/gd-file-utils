@@ -189,17 +189,29 @@ class GDCharacterWriter {
   }
 
   /**
+   * Writes a stash tab item.
+   * @param {GDStashItem} item to write
+   */
+  writeStashItem_(item) {
+    this.writeItem_(item);
+    this.writer_.writeFloat(item.position_.x);
+    this.writer_.writeFloat(item.position_.y);
+  }
+
+  /**
    * Writes information about a stash tab.
-   * @param {Object} stash to write
+   * @param {GDStashTab} stash to write
    */
   writeStashTab_(stash) {
     const blockStart = this.writer_.writeBlockStart(0);
 
-    this.writer_.writeInt(stash.width);
-    this.writer_.writeInt(stash.height);
+    this.writer_.writeInt(stash.width_);
+    this.writer_.writeInt(stash.height_);
 
-    // TODO: only write 0 size stash.
-    this.writer_.writeInt(0);
+    this.writer_.writeInt(stash.items_.length);
+    for (let i = 0; i < stash.items_.length; ++i) {
+      this.writeStashItem_(stash.items_[i]);
+    }
 
     this.writer_.writeBlockEnd(blockStart);
   }

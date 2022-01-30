@@ -11,7 +11,7 @@ class GDFileWriter {
      * TODO: add mechanism for increasing in size.
      * TODO: pick better default size.
      */
-    const BUFFER_SIZE = 4096;
+    const BUFFER_SIZE = 12288;
     this.buffer_ = new ArrayBuffer(BUFFER_SIZE);
 
     /**

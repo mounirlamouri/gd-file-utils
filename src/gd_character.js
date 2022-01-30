@@ -1,6 +1,7 @@
 const {GDFactions} = require('./gd_factions');
 const {GDPlayStats} = require('./gd_play_stats');
 const {GDSkill} = require('./gd_skill');
+const {GDStashTab} = require('./gd_stash_tab');
 const {GDUiSettings} = require('./gd_ui_settings');
 
 /**
@@ -173,7 +174,7 @@ class GDCharacter {
     this.inventory_ = null;
 
     /** Character's personal stash. */
-    this.stash_ = [{width: 0, height: 0}];
+    this.stash_ = [new GDStashTab()];
 
     /** Character's spawn locations per difficulty level. */
     this.spawnDifficulty_ = [[], [], []];
