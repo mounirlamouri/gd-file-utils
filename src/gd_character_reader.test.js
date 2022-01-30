@@ -813,3 +813,91 @@ test('Read crucible one round character', async () => {
 
   expect(reader.read()).toStrictEqual(character);
 });
+
+test('Read character with two masteries not taken', async () => {
+  const buffer = await fs.readFile('test/data/two_masteries_not_taken.gdc');
+  const reader = new GDCharacterReader(buffer.buffer);
+
+  const character = new GDCharacter();
+  character.name_ = 'BarFoo';
+  character.sex_ = GDCharacter.Sex.Female;
+  character.hc_ = true;
+  character.hasBeenInGame_ = true;
+  character.money_ = 8604488;
+  character.masteriesAllowed_ = 2;
+  character.experience_ = 10774;
+  character.currentTribute_ = 0;
+  character.headerLevel_ = 10;
+  character.bioLevel_ = 10;
+  character.attributePointsUnspent_ = 0;
+  character.skillPointsUnspent_ = 27;
+  character.devotionPointsUnspent_ = 2;
+  character.totalDevotionUnlocked_ = 2;
+  character.health_ = 430;
+  character.physique_ = 122;
+
+  character.fileInfo_.key = 73693701;
+
+  for (let i = 0; i < character.skills_.length; ++i) {
+    if (i == character.skills_.length - 1) {
+      character.skills_[i].enabled_ = false;
+    } else {
+      character.skills_[i].enabled_ = true;
+    }
+  }
+
+  character.playStats_.criticalHitsInflicted_ = 28;
+  character.playStats_.deaths_ = 0;
+  character.playStats_.greatestDamageInflicted_ = 148.88011169433594;
+  character.playStats_.greatestDamageReceived_ = 127.88601684570312;
+  character.playStats_.greatestMonsterKilledLevel_[0] = 10;
+  character.playStats_.greatestMonsterKilledLifeAndMana_[0] = 1068;
+  character.playStats_.greatestMonsterKilledName_[0] = 'tagEnemyGolemRockA01';
+  character.playStats_.greatestSurvivalScore_ = 1120;
+  character.playStats_.survivalWaveTier_ = 10;
+  character.playStats_.hitsInflicted_ = 1142;
+  character.playStats_.hitsReceived_ = 1898;
+  character.playStats_.kills_ = 338;
+  character.playStats_.lastHitBy_ = 510.5;
+  character.playStats_.lastHit_ = 267.4337463378906;
+  character.playStats_.lastMonsterHitBy_[0] = 'tagNPC_PowerupsS01';
+  character.playStats_.lastMonsterHit_[0] = 'tagEnemyGolemRockA01';
+  character.playStats_.playTime_ = 1890;
+  character.playStats_.healthPotionsUsed_ = 35;
+  character.playStats_.maxLevel_ = 5;
+
+  character.inventory_ = new GDInventory({
+    bags: [],
+    focused: 0,
+    selected: 0,
+    useAlternate: 1,
+    alternate1: 1,
+    alternate2: 0,
+    equipment: [],
+    weapons1: [],
+    weapons2: [],
+  });
+  character.stash_ = [];
+
+  character.lootFilter_[0] = false;
+
+  character.weaponSwapEnabled_ = true;
+  character.weaponSwapActive_ = true;
+  character.tutorial_ = [7, 26, 13, 15, 61, 44, 45, 36, 37, 41, 38, 64, 8, 48,
+    14, 63, 18, 33, 20, 68];
+
+  character.tokens_ = [
+    ['SURVIVALMODE_STARTERCHEST'],
+    [],
+    [],
+  ];
+
+  const expectedCharacter = reader.read();
+  // Resetting some stuff for simplicity.
+  expectedCharacter.inventory_.bags_ = [];
+  expectedCharacter.inventory_.equipment_ = [];
+  expectedCharacter.inventory_.weapons1_ = [];
+  expectedCharacter.inventory_.weapons2_ = [];
+  expectedCharacter.stash_ = [];
+  expect(expectedCharacter).toStrictEqual(character);
+});

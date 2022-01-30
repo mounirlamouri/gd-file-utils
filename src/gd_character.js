@@ -61,7 +61,7 @@ class GDCharacter {
     /** ??? */
     this.greatestSurvivalDifficulty_ = 0;
 
-    /** Current tribute value. */
+    /** Current tribute (from Crucible). */
     this.currentTribute_ = 0;
 
     /** TODO: what is it? */
@@ -71,10 +71,10 @@ class GDCharacter {
     // TODO: probably boolean.
     this.skillWindowShowHelp_ = 1;
 
-    /** Whether weapon swap is active. */
+    /** Whether alternative weapons (set #2) is currently enabled. */
     this.weaponSwapActive_ = false;
 
-    /** Whether weapon swap is enabled. */
+    /** Whether there are alternative weapons (set #2) and can be swapped . */
     this.weaponSwapEnabled_ = false;
 
     /** Texture. TODO: why is it empty for some characters? */

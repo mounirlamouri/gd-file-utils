@@ -20,14 +20,31 @@ class GDPlayStats {
     /** Total number of kills. */
     this.kills_ = 0;
 
+    /** Experience from kills, as opposed to from quests, crucible, etc. */
     this.experienceFromKills_ = 0;
+
+    /** Total number of health potions used. */
     this.healthPotionsUsed_ = 0;
+
+    /** Total number of energy potions used. */
     this.manaPotionsUsed_ = 0;
+
+    /** TODO?! */
     this.maxLevel_ = 1;
+
+    /** Count of received hits. */
     this.hitsReceived_ = 0;
+
+    /** Count of inflicted hits. */
     this.hitsInflicted_ = 0;
+
+    /** Count of inflicted critical hits. */
     this.criticalHitsInflicted_ = 0;
+
+    /** Count of received critical hits. */
     this.criticalHitsReceived_ = 0;
+
+    /** Greatest value of inflicted damage. */
     this.greatestDamageInflicted_ = 0;
 
     this.greatestMonsterKilledName_ = ['', '', ''];
@@ -37,7 +54,10 @@ class GDPlayStats {
     this.lastMonsterHitBy_ = ['', '', ''];
 
     this.championKills_ = 0;
+
+    /** TODO!? */
     this.lastHit_ = 0;
+    /** TODO!? */
     this.lastHitBy_ = 0;
     this.greatestDamageReceived_ = 0;
     this.herosKilled_ = 0;

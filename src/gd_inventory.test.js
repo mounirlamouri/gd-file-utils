@@ -5,7 +5,7 @@ test('Constructor with no fields', () => {
   const inventory = new GDInventory();
 
   const expected = new GDInventory();
-  expected.bags_ = 1;
+  expected.bags_ = null;
   expected.focused_ = 0;
   expected.selected_ = 0;
   expected.useAlternate_ = 0;
