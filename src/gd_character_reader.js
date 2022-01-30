@@ -465,7 +465,7 @@ class GDCharacterReader {
     const loreNotesCount = this.reader_.readInt();
     this.character_.loreNotes_.length = loreNotesCount;
     for (let i = 0; i < loreNotesCount; ++i) {
-      // TODO
+      this.character_.loreNotes_[i] = this.reader_.readString();
     }
 
     this.reader_.readBlockEnd(block);

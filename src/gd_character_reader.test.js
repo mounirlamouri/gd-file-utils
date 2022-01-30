@@ -3,9 +3,10 @@ const {GDCharacter} = require('./gd_character');
 const {GDEquipmentSlot} = require('./gd_equipment_slot');
 const {GDInventory} = require('./gd_inventory');
 const {GDInventoryItem} = require('./gd_inventory_item');
-const fs = require('fs/promises');
+const {GDSkill} = require('./gd_skill');
 const {GDStashTab} = require('./gd_stash_tab');
 const {GDStashItem} = require('./gd_stash_item');
+const fs = require('fs/promises');
 
 test('Read freshly created man sc character', async () => {
   const buffer = await fs.readFile('test/data/freshly_created.gdc');
@@ -899,5 +900,129 @@ test('Read character with two masteries not taken', async () => {
   expectedCharacter.inventory_.weapons1_ = [];
   expectedCharacter.inventory_.weapons2_ = [];
   expectedCharacter.stash_ = [];
+  expect(expectedCharacter).toStrictEqual(character);
+});
+
+test('Read character with lore and skills', async () => {
+  const buffer = await fs.readFile('test/data/lore_skills.gdc');
+  const reader = new GDCharacterReader(buffer.buffer);
+
+  const character = new GDCharacter();
+  character.name_ = 'FooBar';
+  character.sex_ = GDCharacter.Sex.Male;
+  character.texture_ = 'creatures/pc/hero02.tex';
+  character.money_ = 58;
+  character.masteriesAllowed_ = 1;
+  character.hasBeenInGame_ = true;
+  character.attributePointsUnspent_ = 2;
+  character.bioLevel_ = 3;
+  character.classInfo_ = 'tagSkillClassName04';  // Nightlblade
+  character.skillPointsUnspent_ = 4;
+  character.skillWindowShowHelp_ = 0;
+  character.difficulty_ = 16; // Normal Veteran
+  character.experience_ = 355;
+  character.headerLevel_ = 3;
+  character.weaponSwapEnabled_ = true;
+
+  character.loreNotes_ = [
+    'records/items/loreobjects/loreobject_lowercrossinga01.dbr',
+  ];
+  character.tutorial_ = [
+    7, 26, 9, 15, 44, 14, 48, 18, 13, 45, 31, 8, 21, 22, 23
+  ];
+
+  character.fileInfo_.key = 78928586;
+
+  character.factions_.list_[2] = {
+    modified: 1,
+    unlocked: 1,
+    value: -38,
+    negativeBoost: 0,
+    positiveBoost: 0,
+  };
+  character.factions_.list_[5] = {
+    modified: 1,
+    unlocked: 1,
+    value: -24,
+    negativeBoost: 0,
+    positiveBoost: 0,
+  };
+
+  character.skills_ = [
+    new GDSkill({
+      name: 'records/skills/default/defaultkickattack.dbr',
+      enabled: true,
+    }),
+    new GDSkill({
+      name: 'records/skills/default/defaultwpbasicattack.dbr',
+      enabled: true,
+    }),
+    new GDSkill({name: 'records/skills/default/defaultmoveto.dbr'}),
+    new GDSkill({name: 'records/skills/default/defaultweaponattack.dbr'}),
+    new GDSkill({
+      name: 'records/skills/default/defaultpetattack.dbr',
+      enabled: false,
+    }),
+    new GDSkill({
+      name: 'records/skills/playerclass04/_classtraining_class04.dbr',
+      enabled: true,
+    }),
+    new GDSkill({
+      name: 'records/skills/playerclass04/wpattack0.dbr',
+      enabled: false,
+    }),
+  ];
+
+  character.playStats_.playTime_ = 1001;
+  character.playStats_.maxLevel_ = 3;
+  character.playStats_.loreNotesCollected_ = 1;
+  character.playStats_.criticalHitsInflicted_ = 15;
+  character.playStats_.deaths_ = 1;
+  character.playStats_.experienceFromKills_ = 336;
+  character.playStats_.greatestDamageInflicted_ = 40.09530258178711;
+  character.playStats_.greatestDamageReceived_ = 31.30105209350586;
+  character.playStats_.greatestMonsterKilledLevel_[0] = 3;
+  character.playStats_.greatestMonsterKilledLifeAndMana_[0] = 334;
+  character.playStats_.greatestMonsterKilledName_[0] = 'tagAetherCrystalA01';
+  character.playStats_.healthPotionsUsed_ = 1;
+  character.playStats_.hitsInflicted_ = 269;
+  character.playStats_.hitsReceived_ = 261;
+  character.playStats_.kills_ = 61;
+  character.playStats_.lastHitBy_ = 173.89999389648438;
+  character.playStats_.lastHit_ = 174.32000732421875;
+  character.playStats_.lastMonsterHitBy_[0] ='tagAetherCrystalA01';
+  character.playStats_.lastMonsterHit_[0] ='tagAetherCrystalA01';
+
+  character.spawnLocation_[0] = new Uint8Array([110, 143, 45, 112, 149, 79, 56,
+      103, 93, 21, 75, 158, 88, 4, 108, 6]);
+  character.spawnDifficulty_[0] = [
+      new Uint8Array([110, 143, 45, 112, 149, 79, 56, 103, 93, 21, 75, 158, 88,
+          4, 108, 6]),
+  ];
+  character.teleports_[0] = [
+    new Uint8Array([183, 127, 11, 128, 41, 79, 148, 246, 80, 105, 247, 183, 215,
+        108, 231, 83]),
+    new Uint8Array([37, 51, 156, 207, 223, 66, 143, 56, 170, 254, 232, 156, 16,
+        230, 145, 63]),
+  ];
+
+  character.inventory_ = new GDInventory({
+    bags: [],
+    focused: 0,
+    selected: 0,
+    useAlternate: 0,
+    alternate1: 0,
+    alternate2: 1,
+    equipment: [],
+    weapons1: [],
+    weapons2: [],
+  });
+
+  const expectedCharacter = reader.read();
+  // Resetting some stuff for simplicity.
+  expectedCharacter.inventory_.bags_ = [];
+  expectedCharacter.inventory_.equipment_ = [];
+  expectedCharacter.inventory_.weapons1_ = [];
+  expectedCharacter.inventory_.weapons2_ = [];
   expect(expectedCharacter).toStrictEqual(character);
 });

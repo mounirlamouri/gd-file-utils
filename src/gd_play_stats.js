@@ -67,6 +67,8 @@ class GDPlayStats {
     this.mythicalRelicsCrafted_ = 0;
     this.shrinesRestored_ = 0;
     this.oneShotChestsOpened_ = 0;
+
+    /** Total numbor of lore notes collected. */
     this.loreNotesCollected_ = 0;
 
     this.bossKills_ = [0, 0, 0];

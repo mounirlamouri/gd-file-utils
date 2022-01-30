@@ -7,10 +7,16 @@ class GDFactions {
    */
   constructor(init = null) {
     /** First int in the faction block. Not clear what is represents. */
+    // TODO
     this.faction_ = (init && init.faction != null) ? init.faction : 0;
 
     /** Relationship with all factions. Unclear which factions are which. */
     // TODO: create a FactionInfo class.
+    // modified: whether the faction information were ever modified
+    // negativeBoost: ??
+    // positiveBoost?
+    // unlocked: whether the faction was unlocked by the character
+    // value: current value (negative or positive)
     this.list_ = (init && init.list != null) ? init.list : [];
     if (!init || init.list == null) {
       this.list_ = [{

@@ -364,7 +364,7 @@ class GDCharacterWriter {
     this.writer_.writeInt(this.character_.loreNotes_.length);
 
     for (let i = 0; i < this.character_.loreNotes_.length; ++i) {
-      // TODO
+      this.writer_.writeString(this.character_.loreNotes_[i]);
     }
 
     this.writer_.writeBlockEnd(blockStart);

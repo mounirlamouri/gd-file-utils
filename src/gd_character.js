@@ -211,7 +211,7 @@ class GDCharacter {
     /** Character's skills from items. */
     this.itemSkills_ = [];
 
-    /** Number of masteries allowed. */
+    /** Number of masteries allowed (whether they are used or not). */
     this.masteriesAllowed_ = 0;
 
     /** Number of time a skill points was reclaimed. */
